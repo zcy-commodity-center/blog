@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>业务架构 | 政采云商品中心 - 技术博客</title>
+  <meta name="description" content="业务架构简介本文对业务架构进行了简要的介绍, 目的在于让大家对于业务架构有一个清晰的认识, 了解什么是业务架构, 业务架构的内容, 以及如何进行业务架构, 业务架构的表达形式等. 本文侧重于方法论, 并对表达形式进行了侧重. 笔者建议读者在进行阅读的时候, 带着某一个具体的业务进行阅读. 阅读完成后, 会对如何描述业务产生一个较清晰的框架结构认知. 简述业务架构的定义可以参考企业架构定义, 它描述">
+<meta name="keywords" content="架构,业务架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="业务架构">
+<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/index.html">
+<meta property="og:site_name" content="政采云商品中心技术博客">
+<meta property="og:description" content="业务架构简介本文对业务架构进行了简要的介绍, 目的在于让大家对于业务架构有一个清晰的认识, 了解什么是业务架构, 业务架构的内容, 以及如何进行业务架构, 业务架构的表达形式等. 本文侧重于方法论, 并对表达形式进行了侧重. 笔者建议读者在进行阅读的时候, 带着某一个具体的业务进行阅读. 阅读完成后, 会对如何描述业务产生一个较清晰的框架结构认知. 简述业务架构的定义可以参考企业架构定义, 它描述">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/application-data-matrix.png">
+<meta property="og:image" content="https://advergizefiles-bragboxx.netdna-ssl.com/wp-content/uploads/Gap-Analysis.png?x66602">
+<meta property="og:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/business-arch-gap-analysis.png">
+<meta property="og:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/gap-analysis-maturity-assseement.png">
+<meta property="og:image" content="https://www.uml-diagrams.org/use-case-diagrams/use-case-diagram-elements.png">
+<meta property="og:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/Order-Processing.jpg">
+<meta property="og:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/N2-Building-Block.png">
+<meta property="og:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/N2-Diagram.png">
+<meta property="og:image" content="https://wcs.smartdraw.com/data-flow-diagram/img/data-flow-diagram.jpg?bn=1510011136">
+<meta property="og:updated_time" content="2019-02-26T15:08:13.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="业务架构">
+<meta name="twitter:description" content="业务架构简介本文对业务架构进行了简要的介绍, 目的在于让大家对于业务架构有一个清晰的认识, 了解什么是业务架构, 业务架构的内容, 以及如何进行业务架构, 业务架构的表达形式等. 本文侧重于方法论, 并对表达形式进行了侧重. 笔者建议读者在进行阅读的时候, 带着某一个具体的业务进行阅读. 阅读完成后, 会对如何描述业务产生一个较清晰的框架结构认知. 简述业务架构的定义可以参考企业架构定义, 它描述">
+<meta name="twitter:image" content="https://blog.zcy-commodity.tech/2019/02/21/业务架构/image/application-data-matrix.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/02/21/业务架构/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="政采云商品中心技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">商品中心</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">政采云有限公司</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 浙江 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                彬彬：像我这么NB的我们有7个<br>灰谷：码出自由<br>凉一：无极致，不code<br>双毅：more effective, no idle work<br>元芳：做正确的事<br>奕铭：人生苦短，join us<br>渊虹：我写代码养你
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/业务架构/">业务架构</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElasticSearch/">ElasticSearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/业务架构/">业务架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能调优/">性能调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ElasticSearch/" style="font-size: 13px;">ElasticSearch</a> <a href="/tags/业务架构/" style="font-size: 13px;">业务架构</a> <a href="/tags/性能调优/" style="font-size: 13px;">性能调优</a> <a href="/tags/架构/" style="font-size: 13px;">架构</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/业务架构/">业务架构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/21/业务架构/" class="title">业务架构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T04:48:16.000Z" itemprop="datePublished">2019-02-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ElasticSearch/">ElasticSearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/" class="title">ElasticSearch性能调优之设置refresh_interval实战</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-19T12:00:00.000Z" itemprop="datePublished">2019-02-19</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-业务架构" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      业务架构
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/02/21/业务架构/" class="article-date">
+	  <time datetime="2019-02-21T04:48:16.000Z" itemprop="datePublished">2019-02-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/业务架构/">业务架构</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/业务架构/">业务架构</a>, <a class="article-tag-link" href="/tags/架构/">架构</a>
+  </span>
+
+
+        
+
+	<span class="article-read hidden-xs">
+    	<i class="icon icon-eye-fill" aria-hidden="true"></i>
+    	<span id="/2019/02/21/业务架构/" class="leancloud_visitors" data-flag-title="业务架构">
+			<span class="leancloud-visitors-count">0</span>
+		</span>
+    </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/02/21/业务架构/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 6.1k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 20(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="业务架构简介"><a href="#业务架构简介" class="headerlink" title="业务架构简介"></a>业务架构简介</h1><p>本文对业务架构进行了简要的介绍, 目的在于让大家对于业务架构有一个清晰的认识, 了解什么是业务架构, 业务架构的内容, 以及如何进行业务架构, 业务架构的表达形式等. 本文侧重于方法论, 并对表达形式进行了侧重. 笔者建议读者在进行阅读的时候, 带着某一个具体的业务进行阅读. 阅读完成后, 会对如何描述业务产生一个较清晰的框架结构认知.</p>
+<h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>业务架构的定义可以参考企业架构定义, 它描述了业务组成部件, 业务相互之间的关系, 业务的运作方式/机制/流程等. 它主要包含了三点</p>
+<ol>
+<li>业务组成部件的阐述和分析</li>
+<li>业务组成部件之间的关系</li>
+<li>业务的运作方式/业务流程/业务活动</li>
+</ol>
+<p>前两个是静态的实体(人/物)和结构, 后一个是动态的行为.</p>
+<p>以下是TOGAF中对于Business-Arch的定义</p>
+<blockquote>
+<p>A representation of holistic, multi-dimensional business views of: capabilities, end-to-end value delivery, information, and organizational structure; and the relationships among these business views and strategies, products, policies, initiatives, and stakeholders.</p>
+</blockquote>
+<p>业务架构分析通常位于技术/信息架构之前, 进行业务架构分析的目标主要以下几点</p>
+<ol>
+<li>开发Target Business Architecture以描述企业如何完成业务目标</li>
+<li>通过分析BaseLine和Target之间的Gap确定企业架构的的路线图, 并定义期间需要完成的组件</li>
+<li>为后续的信息架构/技术架构提供概念建模的基础</li>
+</ol>
+<h2 id="抽象层次"><a href="#抽象层次" class="headerlink" title="抽象层次"></a>抽象层次</h2><p>抽象层次是一个通用的概念, 不止是针对业务架构. 在笔者看来, 任何对于事物的描述都可以使用不同的抽象层次来表达, 大致可以归纳为三大类, 概念模型, 逻辑模型和物理模型, 相信熟悉数据库设计的人一定对这三个层次非常的了解. 同理, 业务架构也可以分三个层次进行描述, 概念层次、逻辑层次和物理层次. 通常来说, 这三个层次逐渐具体. 概念层次可以仅仅是一段对于业务的简单描述的语句. 它不要求详细的信息和严密的逻辑. 逻辑层次要求能够在逻辑上自圆其说, 即包含明确的信息实体及逻辑顺序. 物理层次在逻辑层次之上, 又添加了具体信息的字段/属性等描述, 以及业务逻辑顺序中的数据交换及程序 时序逻辑.</p>
+<p>在本篇文章中, 抽象层次会多次被使用到. 笔者建议在业务设计的初期, 尽量使用拥有较强语义的概念层次进行业务架构的设计, 随着时间和对业务的逐步了解, 依次从抽象到具体.</p>
+<h2 id="分析方法"><a href="#分析方法" class="headerlink" title="分析方法"></a>分析方法</h2><p>上文层说道, 业务架构包含了三要点, 下面简单介绍下如何对这三块内容进行分析</p>
+<h4 id="业务组成部件-Business-Component"><a href="#业务组成部件-Business-Component" class="headerlink" title="业务组成部件(Business Component)"></a>业务组成部件(Business Component)</h4><p>业务组成部件包含了以下几点</p>
+<ol>
+<li>业务组成部件包含的信息(What)</li>
+<li>业务组成部件包含的功能(How)</li>
+<li>业务组成部件的目标用户(Who)</li>
+</ol>
+<p>组成部件描述的是业务实体的静态信息, 比较好的<strong>分析方法</strong>是使用列表或者树(树是列表的组合)的形式一一罗列列出来. 比如电商行业商品信息的信息(What)可以如下罗列.</p>
+<ul>
+<li>商品<ul>
+<li>商品名称</li>
+<li>品牌</li>
+<li>型号</li>
+<li>商品属性<ul>
+<li>关键属性</li>
+<li>销售属性</li>
+<li>普通属性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="业务组成部件之间的关系"><a href="#业务组成部件之间的关系" class="headerlink" title="业务组成部件之间的关系"></a>业务组成部件之间的关系</h4><p>关系在维基百科中的定义是事物之间相互作用、相互影响的状态. 由此可见, 它至少包含了两个实体, 描述的是一个实体和另一个实体在多个维度的相互作用. 笔者比较推崇的分析关系的<strong>分析方法</strong>是使用二维矩阵. 下例为TOGAF示例中应用和数据的关系矩阵</p>
+<p><img src="image/application-data-matrix.png" alt="Appcation/Data Matrix"></p>
+<h4 id="业务的运作方式-业务流程"><a href="#业务的运作方式-业务流程" class="headerlink" title="业务的运作方式/业务流程"></a>业务的运作方式/业务流程</h4><p>笼统的讲, 业务流程包含以下几点</p>
+<ol>
+<li>业务流程涉及到的业务组成部件(What)</li>
+<li>业务流程涉及到的组成部件的功能(How)及其时序(When)</li>
+<li>业务流程涉及到的组成部件之间的数据(What)交互</li>
+</ol>
+<p>业务流程是人们针对某个业务目标而定义的一系列的达成业务目标的活动序列, 通常是人们根据商业规律的经验总结出来的一套流程, 比如我们去超市的购物流程, 进商场后 <code>推车 -&gt; 选品 -&gt; 前台收银</code> 就是一个针对完成购物这个业务目标而定义的活动序列.</p>
+<p>业务流程的关键在于一个<code>流</code>字, 在一个商业(Business)活动里面, 笔者认为流主要分为三个, 物流, 信息流, 资金流. 物流中的物通常指代的是广义的商品, 广义商品即可以是诸如滴滴打车那样的虚拟服务, 也可以是实际在商城购买的具体的货物. 这里的物流关注的是, 怎么把商品运送到用户的手中. 任何的商业活动都会涉及到交易, 自然而然也会涉及到资金的流转, 资金流关注的是资金如何计算, 如何在系统的用户之间(比如买卖家)之间流转. 在我们把一个商业活动线上化之后, 必然也会涉及到信息的抽取和流转. 信息流关注的是如何把线下的人/事/物通过线上的数据进行表达, 以及在业务活动进行中, 如何在不同的业务参与者之间进行信息的流转.</p>
+<p>对业务流程的分析, 笔者比较推崇表现力更为丰富的图形来表达, 在工具篇会介绍使用什么样的工具来进行分析, 以及添加分析结果的示例</p>
+<h2 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h2><p>在进行业务流程的分析之后, 我们会产出一系列的业务流程组件和业务流程的描述, 但是这还不足以指导我们进行具体的工作分解. 因此我们需要一套工作的过程来识别出我们的工作内容. 下面会对这块进行简单的介绍.</p>
+<p>笔者认为大部分的工作过程都可以用现状分析, 目标分析, 以及两者之间的差距分析来满足. 对于业务架构来说, 也是同理, 业务架构的工作过程就包含了识别业务架构现状, 根据业务目标设计目标业务架构, 以及进行两者之间的差距分析. 在经过差距分析之后, 自然就能够确认工作范围, 比如哪些业务组成部件是新增的, 哪些部件的功能进行了调整, 部件的交互流程进行了怎样的修改. 目标和现状的分析会有不同:</p>
+<ul>
+<li>目标架构的开发通常是采用自上而下的方法</li>
+<li>基线架构针对当前状态的分析经常是自下而上的</li>
+</ul>
+<h4 id="差距分析"><a href="#差距分析" class="headerlink" title="差距分析"></a>差距分析</h4><p>差距分析是一种用来判断当前应用系统是否能够满足新业务需求的方法. 如果不满足, 需要执行哪些步骤来保证业务需求被成功满足. 差距代表了当前状态和目标状态的距离, 根据差距分析结果定义出来的执行计划可以被用来定义软件后续的road map. 下图是一个通用的差距分析的过程描述.</p>
+<p><img src="https://advergizefiles-bragboxx.netdna-ssl.com/wp-content/uploads/Gap-Analysis.png?x66602" alt="gap-analysis-normal"></p>
+<p>差距分析的抽象层次可以是概念上的, 也可以是逻辑或者物理的, 视当前分析的抽象层次而定. 在分析阶段, 可以仅仅是概念上的变更分析, 但到了项目实施落地阶段, 必须包含项目现状和目标的实际定义, 以及逐步完成目标的具体操作步奏, 否则将不具备可落地性. 差距分析的内容可以是关于业务流程变更的, 也可以是关于系统部署结构变更的, 一般在做一个系统时, 哪些东西发生变更了, 那么其对应的差距分析就必须被包含. 下图是一个概念抽象层次上的业务架构的差距分析实例, 如果要进行落地的话, 必须要把概念上的战略转换为更具体的问题和实施计划.</p>
+<p><img src="image/business-arch-gap-analysis.png" alt></p>
+<p>在进行差距分析的时候, 建议都能产出一份成熟度评估对比图出来, 这个成熟度可以是针对业务的, 比如业务流程自动化程度或业务可编排程度. 也可以是针对技术的, 比如当前业务逻辑隔离程度, 视观察人的视角而定. 如下图所示便是一个交易下沉的成熟度评估对比图, 内圈是系统当前业务迭代中几个所关注的关键性指标, 外圈红色的是预期要达到的指标. 有了这样一份指标成熟度对比的靶心图, 就可以非常直观的看到此次进行业务迭代所带来的收益.</p>
+<p><img src="image/gap-analysis-maturity-assseement.png" alt></p>
+<h4 id="行业标准"><a href="#行业标准" class="headerlink" title="行业标准"></a>行业标准</h4><p>在进行业务架构的工作过程中, 一般需要一位资深的业务领域专家进行协助. 如果不幸团队中此类人才有缺失, 也可以通过去阅读相关行业领域的规范来弥补. 一般情况, 每个行业都会有相关的协会制定各式各样的行业标准. 对于电商行业来说, 我国就有相应的国标系列, 比如笔者曾经读过的’GB/Z 20539-2006 电子商务业务过程和信息建模指南’. 不论是进行业务架构还是进行技术架构, 尤其是在涉及到自己陌生的领域时, 笔者建议能够在了解相关行业标准的情况下进行架构的设计和分析.</p>
+<h2 id="工具篇-表达方式"><a href="#工具篇-表达方式" class="headerlink" title="工具篇 - 表达方式"></a>工具篇 - 表达方式</h2><p>架构需要解决的问题是对一个系统进行清晰的描述, 通常描述一件事物的文档形式可以有以下三种, 目录、矩阵和图形</p>
+<ul>
+<li>目录（Catalogs）：此种类型的原子架构制品(视角)以列表的形式对各种构建块进行列举。</li>
+<li>矩阵（Matrices）：此种类型的原子架构制品(视角)用于展示特定构建块之间的关系。</li>
+<li>图形（Diagrams）：此种类型的原子架构制品(视角)采用了一种具有丰富表现力的方式对构建块以及他们之间的关系进行了展示。此种方式特别适合用于在干系人之间进行沟通的场合。</li>
+</ul>
+<p>不同的建模工具可以从不同视角对业务架构的某一个方面进行表达, 比如BPMN可以从业务流转过程视角来描述业务架构中的业务流程进行描述, DFD可以从数据流向的视角对业务架构的数据方面进行描述. 在笔者看来, 没有绝对标准的描述形式, 不管是什么样的形式, 都是在一定程度上对系统真实业务的还原, 能够把系统的某一个或者几个方面真实清楚地描述出来的文档形式就是好的形式. 以下笔者将介绍一些能够用于业务架构建模的工具, 当然这些工具大多具备通用性, 不仅仅限定在业务架构中被使用.</p>
+<h4 id="UML"><a href="#UML" class="headerlink" title="UML"></a>UML</h4><p><a href="https://www.uml-diagrams.org/uml-25-diagrams.html" rel="external nofollow noopener noreferrer" target="_blank">UML</a>图是一种针对系统设计和实现进行建模的图形表达, UML图包含了一系列的图形元素, UML节点和连接节点的边(也被称之为路径或流).</p>
+<p>UML 规范定义了两大类UML图形: 结构图形和行为图形. 结构图形表达了系统的静态结构, 系统的组件部件的抽象层和实现层, 系统部件之间的关系. 结构图的每个元素表达了系统中一个有意义的概念. 这些系统元素有不同的抽象层次, 可以是抽象层的, 逻辑层的或者实现层的.</p>
+<p>UML 行为图形描述了一个系统中组成部分的动态行为, 动态行为可以被描述为一系列根据时间的改变.</p>
+<p>比如UML用例图就可以在设计和分析系统时, 描绘系统包含的功能及其和用户, 下图是摘自UML官方文档中的UML用例图的例子, 更多的关于UML的描述可以读者可以参考UML的最新规范 <a href="https://www.uml-diagrams.org/uml-25-diagrams.html" rel="external nofollow noopener noreferrer" target="_blank">UML2.5</a></p>
+<p><img src="https://www.uml-diagrams.org/use-case-diagrams/use-case-diagram-elements.png" alt></p>
+<p>UML包含了一个系统从抽象到具体的各类视图, 在进行业务架构设计时, 可以选择UML中的各类视图来展现系统的方方面面.</p>
+<h4 id="BPM-BPMN"><a href="#BPM-BPMN" class="headerlink" title="BPM/BPMN"></a>BPM/BPMN</h4><p><a href="http://www.bpmn.org/" rel="external nofollow noopener noreferrer" target="_blank">BPMN</a>是笔者推荐的业务流程建模的工具, 也是目前业界较认可的标准, 最新的版本是<a href="https://www.omg.org/spec/BPMN" rel="external nofollow noopener noreferrer" target="_blank">BPMN2.0.2</a>, 使用BPMN进行业务流程的建模, 必须包含以下几项:</p>
+<ol>
+<li>业务活动相关的功能</li>
+</ol>
+<ul>
+<li>业务内部活动要交换的信息/数据</li>
+<li>业务外部活动要环境的信息/数据</li>
+</ul>
+<p>下图是引自<a href="https://www.businessprocessincubator.com/content/order-processing/" rel="external nofollow noopener noreferrer" target="_blank">BPMN sincubator</a>中的一个订单处理的业务流程图示例</p>
+<p><img src="image/Order-Processing.jpg" alt></p>
+<h4 id="N2-Diagram"><a href="#N2-Diagram" class="headerlink" title="N2 Diagram"></a>N2 Diagram</h4><p>N2-Diagram 是一个使用 N * N 矩阵来表达系统元素/功能之间内部关联关系的工具. 它可以用来表达系统内部功能/数据的关联关系, 是一种<a href="https://en.wikipedia.org/wiki/Function_model" rel="external nofollow noopener noreferrer" target="_blank">功能建模</a>的方法. 下图是一个标准的N2-Diagram, 其主要包含了以下要素</p>
+<ul>
+<li>系统元素和功能位于矩阵中的对角线</li>
+<li>输出位于矩阵中的行, 输入位于矩阵中的列</li>
+<li>外部系统的输入和输出位于矩阵外部, 其位置对应于当前矩阵中的元素/功能</li>
+</ul>
+<p><img src="image/N2-Building-Block.png" alt></p>
+<p>N2-Diagram 可以用来为系统分析提供概念上的指导. 比如下图就包含了一系列使用N2-Diagram分析出来的结果</p>
+<ul>
+<li>Critial Element - 系统中某个特定的元素/功能的接受一系列的元素/功能的输入, 并且把输出传递给输入来源方. 这类特定元素/功能的失败将会导致整个系统的失败, 表明需要针对此特定系统做冗余.</li>
+<li>Feedback loops - 系统中的某几个元素强关联.</li>
+<li>Complex interactions - 过于复杂的系统内部交互和依赖.</li>
+<li>Tightly bound groups of elements - 紧耦合的元素集通常代表潜在的子系统需要被识别并设计.</li>
+</ul>
+<p>结合N2-Diagram和聚类算法, 可以把系统拆分为几个内聚的子模块.</p>
+<ol>
+<li>把构成系统系统的过程按功能先后顺序排在N2的对角线</li>
+<li>矩阵中的单元格使用两个功能公用的操作数关联数填充</li>
+<li>使用聚类算法对功能进行分组, 把操作数链接最紧密的功能聚类在一起</li>
+<li>根据聚类结果重新调整N2对角线的功能顺序, 聚类结果即为系统中的模块.</li>
+</ol>
+<p><img src="image/N2-Diagram.png" alt></p>
+<p>TOGAF中也有使用N2-Diagram进行分析的样例, <a href="http://www.togaf.info/togaf9/togafSlides9/TOGAF-V9-Sample-Catalogs-Matrics-Diagrams-v2.pdf" rel="external nofollow noopener noreferrer" target="_blank">样例 TOGAF-V9-Sample-Catalogs-Matrics-Diagrams P45</a>, 更多关于N2-Diagram的介绍和使用可以参见附录.</p>
+<h4 id="Information-Exchange-Matrix"><a href="#Information-Exchange-Matrix" class="headerlink" title="Information Exchange Matrix"></a>Information Exchange Matrix</h4><p>Information Exchange Matrix 在TOGAF中有进行描述, 笔者对其了解不多, 网上能搜到的资料也比较少, 唯一能找到的示例是在TOGAF的的输出文档样例中. 读者有兴趣的化, 可以作为扩展阅读进行了解</p>
+<p><a href="http://www.togaf.info/togaf9/togafSlides9/TOGAF-V9-Sample-Catalogs-Matrics-Diagrams-v2.pdf" rel="external nofollow noopener noreferrer" target="_blank">样例 TOGAF-V9-Sample-Catalogs-Matrics-Diagrams P46</a></p>
+<h4 id="DFD-Data-flow-Diagrams"><a href="#DFD-Data-flow-Diagrams" class="headerlink" title="DFD(Data flow Diagrams)"></a>DFD(Data flow Diagrams)</h4><p>数据流图用来表示信息系统中的数据流转过程, 他描述了系统业务流程对于其数据的加工和处理. DFD包含四要素:</p>
+<ul>
+<li>流程 - 接收数据输入并处理产生数据输出的业务流程</li>
+<li>数据流向 - 用于描述数据流向的路径, 箭头表示数据的目标流向.</li>
+<li>数据仓库 - 表示数据的存储, 对数据进行存储以备后续的业务流程使用</li>
+<li>外部实体 - 外部实体可以是组织, 人, 机构或者其他信息系统. 表示当前信息系统于外部的交互</li>
+</ul>
+<p>以下是一个简单的数据流图的示例:</p>
+<p><img src="https://wcs.smartdraw.com/data-flow-diagram/img/data-flow-diagram.jpg?bn=1510011136" alt></p>
+<p>数据流图是一种自上而下的分析方法, 它经常被拆分为三层:</p>
+<ul>
+<li>概念层/Level 0(Context Diagram) - 顶层的DFD图, 仅包含一个表达整个系统的流程节点, 表示整个系统和外部实体的交互.</li>
+<li>Level 1 - 对顶层DFD图的分解, 把流程分解为细粒度的系统活动.</li>
+<li>Level 2 - 如果某个流程过于复杂, 可以使用Level 2对Level 1中某个流程进行更细粒度的分解.</li>
+</ul>
+<p>在进行业务架构的时候, 建议使用高层次的DFD对系统的数据流向进行表达.</p>
+<h4 id="Archimate"><a href="#Archimate" class="headerlink" title="Archimate"></a>Archimate</h4><p>相比之前介绍的描述系统具体某个方面的工具如DFD/BPMN, Archimate是一个更全面的企业架构建模语言, 它和UML一样都是建模语言, 所包含的面也和UML一样包括系统中的方方面面. 它是一个包含了描述, 分析企业架构中的关注点随时间变化的可视化的建模语言. Archimate由一系列的图标组成, 每个图标对应架构描述中的实体或关系. Archimate是一个用于描述系统结构和行为的通用语言, 包括了:</p>
+<ul>
+<li>业务流程</li>
+<li>组织架构</li>
+<li>信息流</li>
+<li>IT 系统</li>
+<li>技术基础设施</li>
+</ul>
+<p>TOGAF是一个用于开发和实现企业架构的方法论, 但是TOGAF并没有定义一个用于描述企业架构视图的特定建模语言. Archimate则为企业架构提供了一个统一的建模语言, 包含了企业架构的从战略到建模再到实现各个层面的内容. TOGAF提供的官方示例’ArchiSurance Case Study’也是了Archimate作为其企业架构的建模语言. 此处笔者仅对Archimate进行了非常简单的介绍, 更多关于Archimate的介绍, 还是希望读者可以在后续工作使用中去阅读相关的规范. 关于Archimate的工具, 笔者经过搜寻, 找到了几个可以用于进行Archimate建模的工具, 读者可以根据自身情况自行选择:</p>
+<ul>
+<li><a href="https://www.archimatetool.com/" rel="external nofollow noopener noreferrer" target="_blank">Archi</a> - 开源</li>
+<li><a href="https://www.visual-paradigm.com/guide/archimate/what-is-archimate/" rel="external nofollow noopener noreferrer" target="_blank">Visual Paradigm</a> - 收费但功能强大全面</li>
+</ul>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><p>业务架构阶段之后, 需要产出几个关键性的文档, 文档及其需要包含的内容如下所列</p>
+<ul>
+<li>基线业务架构1.0</li>
+<li>目标业务架构1.0<ul>
+<li>组织结构</li>
+<li>业务目标, 业务功能, 业务服务, 业务流程, 业务角色, 业务数据模型</li>
+<li>组织和功能关联关系</li>
+</ul>
+</li>
+<li>目标和基线的gap分析结果</li>
+</ul>
+<p>此处是一个笔者根据自身经验整理出来的一份<a href="bussiness-arch-simple.md">政采云特色的业务架构示例</a>, 便于读者在进行业务架构期间进行参考</p>
+<h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><p>架构师需要做的事情就是把组成业务架构的业务活动和组成信息架构的数据实体和功能关联起来, 仅此而已. 这件事说简单也简单, 因为它仅仅是一个分类的事情, 仅仅是把我们程序中的函数和数据分类到业务活动中. 但是说难也难, 因为从不同的视角看, 其分类的方式可以有无限种, 架构师需要做的就是平衡, 通过最适合的分类方式以最小的复杂度实现业务的功能. 比如对书本的分类, 可以按材质分为纸质书/羊皮/竹简. 也可以按知识的类别分为管理类, 励志类等. 也可以按学科分为数学, 语文, 计算机, 统筹学等. 具体用哪种分法, 是需要视系统的实际业务来划分的. 比如系统的业务需要经常按不同的学科的书籍走不同的业务流程或功能点, 那么需要把学科分类作为平台的第一类对象进行管理, 降低在学科之上进行业务活动的成本. 那如果是一个书本原材料采购的系统, 那么它关注的更多的可能就是书本的材质, 不同的原材料的进货渠道, 仓储要求不一样. 同样是书本, 按不同的视角来看, 看到的东西不一样, 架构师最需要做的就是选择合适的视角去分析系统, 找一个最最适合的分类方式.</p>
+<h2 id="如何度量"><a href="#如何度量" class="headerlink" title="如何度量"></a>如何度量</h2><ul>
+<li>系统功能复杂度<ul>
+<li>经过几级的业务分解可以分解完毕</li>
+<li>和接口数成正比<ul>
+<li>如何识别冗余的接口？</li>
+</ul>
+</li>
+<li>实体数</li>
+</ul>
+</li>
+<li>内聚程度<ul>
+<li>N2分析, 但是如何量化? 如一个子模块依赖外部模块过多则认为其不内聚</li>
+</ul>
+</li>
+<li>外部耦合度<ul>
+<li>依赖的接口数(dubbo依赖)</li>
+</ul>
+</li>
+</ul>
+<h4 id="其他度量项"><a href="#其他度量项" class="headerlink" title="其他度量项"></a>其他度量项</h4><ul>
+<li>功能成熟度</li>
+<li>流程成熟度<ul>
+<li>参见BPM中的流程成熟度模型</li>
+</ul>
+</li>
+<li>性能复杂度<ul>
+<li>和数据量成正比</li>
+</ul>
+</li>
+</ul>
+<h4 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h4><p>此处列出了所有笔者在研究业务架构期间所阅读的文献和博客, 供有兴趣的读者进一步深入了解</p>
+<ul>
+<li><a href="https://publications.opengroup.org/downloadable/download/link/id/MC4zOTQ1MDcwMCAxNTM3ODA0MjI3MjI1NzYwMjM0OTM0Mjcx" rel="external nofollow noopener noreferrer" target="_blank">实例: ArchiSurance Case Study</a></li>
+<li><a href="https://ec.europa.eu/eurostat/cros/system/files/BA%20for%20validation.pdf" rel="external nofollow noopener noreferrer" target="_blank">实例: Business Architecture for ESS Validation</a></li>
+<li><a href="https://booksite.elsevier.com/9780123743695/10steps_DataCategories.pdf" rel="external nofollow noopener noreferrer" target="_blank">Data Categories</a></li>
+<li><a href="https://www.intricity.com/data-warehousing/master-data-vs-transaction-data/" rel="external nofollow noopener noreferrer" target="_blank">master data vs transactional data</a></li>
+<li><a href="https://www.omg.org/spec/BPMN" rel="external nofollow noopener noreferrer" target="_blank">BPMN规范</a></li>
+<li><a href="https://www.omg.org/spec/UML/" rel="external nofollow noopener noreferrer" target="_blank">UML规范</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Function_model" rel="external nofollow noopener noreferrer" target="_blank">Function model</a></li>
+<li><a href="https://www.slideshare.net/LakshminarayananSamp2/detailed-introduction-to-n2-chart-with-examples" rel="external nofollow noopener noreferrer" target="_blank">N2 chart example</a></li>
+<li><a href="https://www.burgehugheswalsh.co.uk/Uploaded/1/Documents/N2-Analysis-Tool-Draft.pdf" rel="external nofollow noopener noreferrer" target="_blank">N2-Analysis-Tool-Draft</a></li>
+<li><a href="https://www.visual-paradigm.com/guide/data-flow-diagram/what-is-data-flow-diagram/" rel="external nofollow noopener noreferrer" target="_blank">what-is-data-flow-diagram</a></li>
+</ul>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>本段摘抄了笔者在收集业务架构文章期间收集到的颇有感悟的语句, 作为后续进行更一步研究的备忘.</p>
+<p><strong>TOGAF p12</strong></p>
+<blockquote>
+<p>Artifacts are generally classified as catalogs (lists of things), matrices (showing relationships between things), and diagrams (pictures of things). Examples include a requirements catalog, business interaction matrix, and a use-case diagram.</p>
+</blockquote>
+<h2 id="待研究"><a href="#待研究" class="headerlink" title="待研究"></a>待研究</h2><ul>
+<li>工具篇<ul>
+<li>引进新的建模工具<ul>
+<li>DDD - DDD可以很好的表述业务组件的关系, 建议使用DDD来描述抽象层的业务组件/核心域关系, 比如商品交易协议三者的视图</li>
+</ul>
+</li>
+<li>建模语言的规范和之间的对比, 比如UML和Archimate是否具备可比性? 两者是否互相完备</li>
+</ul>
+</li>
+<li>理论完备<ul>
+<li>业务架构到技术架构链路打通</li>
+<li>业务架构的gap Analysis 和 工作拆解示例</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">TODO: 再理解下catalog的概念, 看下是不是catalog就是列表?</span><br><span class="line"></span><br><span class="line">图的分类, 有哪些类型的图? diagram tonxmy</span><br><span class="line">我们计算机学的数据结构, 是否可以表达世间万物?</span><br><span class="line"></span><br><span class="line">啥叫分析方法</span><br><span class="line">	比如我们在解算法题的时候, 先根据算法的场景进行建模, 选择合适的表达方式. 然后再根据算法的内容, 选择合适的数据结构.</span><br><span class="line"></span><br><span class="line">是不是抽象到最后的结果只能剩下“实体”和“关联”这两个基础建模元素?</span><br><span class="line"></span><br><span class="line">添加每个部分的概念对比(和建筑/现实生活)</span><br><span class="line">	比如高中生物学习的呼吸系统, O2会有一个处理流程, 从入口到呼吸道, 再到肺, 经过加工和处理后产生CO2通过呼吸道再排出体外. 呼吸道和肺就是系统的参与者, O2就是数据, 呼吸系统是自然规律(商业规律), 也就是业务流程的驱动者. O2在自然规律的驱动下途径各个器官.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zcy-commodity.tech/2019/02/21/业务架构/" title="业务架构" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/02/21/业务架构/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external nofollow noopener noreferrer">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href target="_blank"><span class="text-dark">商品中心</span><small class="ml-1x">政采云有限公司</small></a></h3>
+        <div>政采云有限公司由浙江省财政厅与阿里巴巴集团共同筹建成立，专注服务于政府采购各类用户，为政府采购交易和管理电子化提供整体解决方案。致力于打造政府采购云服务生态圈。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/" title="ElasticSearch性能调优之设置refresh_interval实战"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        &copy; 2019 政采云有限公司
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank" rel="external nofollow noopener noreferrer"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank" rel="external nofollow noopener noreferrer">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: true,
+    appId: 'KMJNjsaJ380sukaFpxB9g8zH-gzGzoHsz',
+    appKey: 'L6oK8Q41FdWQSN26OJLvby8n',
+    placeholder: 'Touch me',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
