@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Elasticsearch DSL快速上手指南 | 政采云商品中心 - 技术博客</title>
+  <meta name="description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch） 原文链接: https://thare.cn/posts/41633c75.html  本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读官方文档为佳。 如何搜索向ES发送rest请求即可 1$ curl -XPOST http://ip:port?indexName/_se">
+<meta name="keywords" content="Elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch DSL快速上手指南">
+<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/03/22/Elasticsearch-DSL快速上手指南/index.html">
+<meta property="og:site_name" content="政采云商品中心技术博客">
+<meta property="og:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch） 原文链接: https://thare.cn/posts/41633c75.html  本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读官方文档为佳。 如何搜索向ES发送rest请求即可 1$ curl -XPOST http://ip:port?indexName/_se">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-22T14:18:30.898Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch DSL快速上手指南">
+<meta name="twitter:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch） 原文链接: https://thare.cn/posts/41633c75.html  本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读官方文档为佳。 如何搜索向ES发送rest请求即可 1$ curl -XPOST http://ip:port?indexName/_se">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/03/22/Elasticsearch-DSL快速上手指南/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="政采云商品中心技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">商品中心</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">政采云有限公司</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 浙江 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                彬彬：像我这么NB的我们有7个<br>灰谷：码出自由<br>凉一：无极致，不code<br>双毅：more effective, no idle work<br>元芳：做正确的事<br>奕铭：人生苦短，join us<br>渊虹：我写代码养你
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/业务架构/">业务架构</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/业务架构/">业务架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能调优/">性能调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Elasticsearch/" style="font-size: 14px;">Elasticsearch</a> <a href="/tags/业务架构/" style="font-size: 13px;">业务架构</a> <a href="/tags/性能调优/" style="font-size: 13px;">性能调优</a> <a href="/tags/架构/" style="font-size: 13px;">架构</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/22/Elasticsearch-DSL快速上手指南/" class="title">Elasticsearch DSL快速上手指南</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-22T14:16:26.000Z" itemprop="datePublished">2019-03-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/业务架构/">业务架构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/21/业务架构/" class="title">业务架构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T04:48:16.000Z" itemprop="datePublished">2019-02-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ElasticSearch/">ElasticSearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/" class="title">ElasticSearch性能调优之设置refresh_interval实战</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-19T12:00:00.000Z" itemprop="datePublished">2019-02-19</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Elasticsearch-DSL快速上手指南" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Elasticsearch DSL快速上手指南
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/03/22/Elasticsearch-DSL快速上手指南/" class="article-date">
+	  <time datetime="2019-03-22T14:16:26.000Z" itemprop="datePublished">2019-03-22</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Elasticsearch/">Elasticsearch</a>
+  </span>
+
+
+        
+
+	<span class="article-read hidden-xs">
+    	<i class="icon icon-eye-fill" aria-hidden="true"></i>
+    	<span id="/2019/03/22/Elasticsearch-DSL快速上手指南/" class="leancloud_visitors" data-flag-title="Elasticsearch DSL快速上手指南">
+			<span class="leancloud-visitors-count">0</span>
+		</span>
+    </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/03/22/Elasticsearch-DSL快速上手指南/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>作者简介: 凉一, 主要负责商品搜索（Elasticsearch）</p>
+<p>原文链接: <a href="https://thare.cn/posts/41633c75.html" rel="external nofollow noopener noreferrer" target="_blank">https://thare.cn/posts/41633c75.html</a></p>
+</blockquote>
+<p>本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" rel="external nofollow noopener noreferrer" target="_blank">官方文档</a>为佳。</p>
+<h2 id="如何搜索"><a href="#如何搜索" class="headerlink" title="如何搜索"></a>如何搜索</h2><p>向ES发送rest请求即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> curl -XPOST http://ip:port?indexName/_search -d "json格式的dsl"</span><br></pre></td></tr></table></figure>
+<p><a href="http://confluence.cai-inc.com//pages/viewpage.action?pageId=15946640" rel="external nofollow noopener noreferrer" target="_blank">各环境ES地址</a></p>
+<h2 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h2><p>先介绍几种复合查询类型（需要包在bool中使用，详情看下方例子） <a href="http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html" rel="external nofollow noopener noreferrer" target="_blank">官网传送门</a></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>must</td>
+<td>必须满足。包含在must内的条件都必须要满足，且会影响最后搜索得分。</td>
+</tr>
+<tr>
+<td>must_not</td>
+<td>必须不满足。包含在must_not内的条件都不应该满足，不会影响最后搜索得分。</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>过滤。和must很像，但有两个区别<br>1. 不会影响搜索得分，速度较must更快<br>2.在ES内会有缓存，加快下次同样条件的查询</td>
+</tr>
+<tr>
+<td>should</td>
+<td>在should内的条件之间是或关系。</td>
+</tr>
+</tbody>
+</table>
+<p>再介绍几种常用的搜索类型 <a href="https://kapeli.com/dash_share?docset_file=ElasticSearch&amp;docset_name=ElasticSearch&amp;path=www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html&amp;platform=elasticsearch&amp;repo=Main&amp;source=www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html&amp;version=6.6.2" rel="external nofollow noopener noreferrer" target="_blank">官网传送门</a></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>term</td>
+<td>类似sql中的=</td>
+</tr>
+<tr>
+<td>terms</td>
+<td>类似sql中的in</td>
+</tr>
+<tr>
+<td>match</td>
+<td>分词匹配，一般嵌套在must内使用。<br>字段类型为text</td>
+</tr>
+<tr>
+<td>match_phrase</td>
+<td>短语匹配，一般嵌套在must内使用。</td>
+</tr>
+<tr>
+<td>range</td>
+<td>范围匹配</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>存在</td>
+</tr>
+<tr>
+<td>wildcard</td>
+<td>模糊查询（禁止在程序中使用）</td>
+</tr>
+</tbody>
+</table>
+<p>下面通过一段dsl来理解</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"query"</span>: &#123;</span><br><span class="line">    <span class="attr">"bool"</span>: &#123;</span><br><span class="line">      <span class="attr">"must"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"match"</span>: &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"手机"</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"must_not"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"status"</span>: <span class="number">-3</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"level"</span>: <span class="number">1</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"filter"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"range"</span>: &#123;</span><br><span class="line">            <span class="attr">"price"</span>: &#123;</span><br><span class="line">              "from": 100, //下边界为100</span><br><span class="line">              "to": null, // 无上边界</span><br><span class="line">              "include_lower": true, // 包含下边界</span><br><span class="line">              "include_upper": false // 包含上边界</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      "should": [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"brandId"</span>: <span class="number">1</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"brandId"</span>: <span class="number">2</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段dsl的含义是</p>
+<ol>
+<li><p>name能匹配上”手机”</p>
+</li>
+<li><p>status不为-3且level不为1</p>
+</li>
+<li><p>价格大于等于100</p>
+</li>
+<li><p>brandId没有限制。很奇怪对不对？看看官方解释</p>
+<blockquote>
+<p>If the <code>bool</code> query is in a <a href="query-filter-context.html">query context</a> and has a <code>must</code> or <code>filter</code> clause then a document will match the <code>bool</code> query even if none of the <code>should</code> queries match. In this case these clauses are only used to influence the score. </p>
+</blockquote>
+<p>意思是：如果一个should同时和must或filter存在同一级，则搜索出来的文档可以不满足should中的条件，should中的条件仅仅会影响搜索得分。</p>
+<p>因此，在这种情况下，<strong>brandId为1或2的结果搜索得分会更高</strong>。</p>
+<p>如果想达到<strong>或</strong>关系要怎么做呢？有两种办法：</p>
+<ol>
+<li><p>同级查询类型中没有must或filter</p>
+</li>
+<li><p>将should包在filter内，例</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  "filter":[</span><br><span class="line">    &#123;</span><br><span class="line">      "bool":&#123; // 记得包在bool中</span><br><span class="line">        "should":[</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"term"</span>: &#123;</span><br><span class="line">              <span class="attr">"brandId"</span>: <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"term"</span>: &#123;</span><br><span class="line">              <span class="attr">"brandId"</span>: <span class="number">2</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="搜索属性"><a href="#搜索属性" class="headerlink" title="搜索属性"></a>搜索属性</h2><p>几种常用搜索属性 <a href="https://kapeli.com/dash_share?docset_file=ElasticSearch&amp;docset_name=ElasticSearch&amp;path=www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html&amp;platform=elasticsearch&amp;repo=Main&amp;source=www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html&amp;version=6.6.2" rel="external nofollow noopener noreferrer" target="_blank">官网传送门</a></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>from</td>
+<td>从第几条结果开始</td>
+</tr>
+<tr>
+<td>size</td>
+<td>返回多少条结果</td>
+</tr>
+<tr>
+<td>_source</td>
+<td>控制返回的字段</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>排序方式，默认按搜索得分倒序排序</td>
+</tr>
+</tbody>
+</table>
+<p>看个例子</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"from"</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="attr">"size"</span>: <span class="number">20</span>,</span><br><span class="line">  <span class="attr">"_source"</span>: [<span class="string">"id"</span>, <span class="string">"name"</span>],</span><br><span class="line">  <span class="attr">"sort"</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"updatedAt"</span>: &#123;</span><br><span class="line">        <span class="attr">"order"</span>: <span class="string">"desc"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"id"</span>: &#123;</span><br><span class="line">        <span class="attr">"order"</span>: <span class="string">"asc"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>表示</p>
+<ol>
+<li>从第10条记录开始，返回20条记录</li>
+<li>只返回id和name两个字段</li>
+<li>先按更新时间倒序，再按id升序排序</li>
+</ol>
+<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><p>几种常用聚合类型 <a href="https://kapeli.com/dash_share?docset_file=ElasticSearch&amp;docset_name=ElasticSearch&amp;path=www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html&amp;platform=elasticsearch&amp;repo=Main&amp;source=www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html&amp;version=6.6.2" rel="external nofollow noopener noreferrer" target="_blank">官网传送门</a></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>terms</td>
+<td>类似group by</td>
+</tr>
+<tr>
+<td>cardinality</td>
+<td>类似count(distinct)</td>
+</tr>
+<tr>
+<td>extended_stats</td>
+<td>计算count、sum、min、max等</td>
+</tr>
+</tbody>
+</table>
+<p>看个例子</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "aggs":&#123; //也可写为aggregations</span><br><span class="line">    "agg1":&#123;</span><br><span class="line">      "terms":&#123;</span><br><span class="line">        "field": "shopId"</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    "agg2":&#123;</span><br><span class="line">      "cardinality":&#123;</span><br><span class="line">        "field": "status"</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    "agg3":&#123;</span><br><span class="line">      "extended_stats":&#123;</span><br><span class="line">        "field": "price"</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这些聚合的含义是</p>
+<ol>
+<li>agg1：对shopId做group by</li>
+<li>agg2：统计共有多少种status</li>
+<li>agg3：查看价格的多种统计结果</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>看个比较完整的dsl</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"from"</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="attr">"size"</span>: <span class="number">20</span>,</span><br><span class="line">  <span class="attr">"_source"</span>: [</span><br><span class="line">    <span class="string">"id"</span>,</span><br><span class="line">    <span class="string">"name"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"sort"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"updatedAt"</span>: &#123;</span><br><span class="line">        <span class="attr">"order"</span>: <span class="string">"desc"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"id"</span>: &#123;</span><br><span class="line">        <span class="attr">"order"</span>: <span class="string">"asc"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"query"</span>: &#123;</span><br><span class="line">    <span class="attr">"bool"</span>: &#123;</span><br><span class="line">      <span class="attr">"must"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"match"</span>: &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"手机"</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"must_not"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"status"</span>: <span class="number">-3</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"level"</span>: <span class="number">1</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"filter"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"range"</span>: &#123;</span><br><span class="line">            <span class="attr">"price"</span>: &#123;</span><br><span class="line">              <span class="attr">"from"</span>: <span class="number">100</span>,</span><br><span class="line">              <span class="attr">"to"</span>: <span class="literal">null</span>,</span><br><span class="line">              <span class="attr">"include_lower"</span>: <span class="literal">true</span>,</span><br><span class="line">              <span class="attr">"include_upper"</span>: <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"should"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"brandId"</span>: <span class="number">1</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"term"</span>: &#123;</span><br><span class="line">            <span class="attr">"brandId"</span>: <span class="number">2</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"aggs"</span>: &#123;</span><br><span class="line">    <span class="attr">"agg1"</span>: &#123;</span><br><span class="line">      <span class="attr">"terms"</span>: &#123;</span><br><span class="line">        <span class="attr">"field"</span>: <span class="string">"shopId"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"agg2"</span>: &#123;</span><br><span class="line">      <span class="attr">"cardinality"</span>: &#123;</span><br><span class="line">        <span class="attr">"field"</span>: <span class="string">"status"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"agg3"</span>: &#123;</span><br><span class="line">      <span class="attr">"extended_stats"</span>: &#123;</span><br><span class="line">        <span class="attr">"field"</span>: <span class="string">"price"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zcy-commodity.tech/2019/03/22/Elasticsearch-DSL快速上手指南/" title="Elasticsearch DSL快速上手指南" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/03/22/Elasticsearch-DSL快速上手指南/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external nofollow noopener noreferrer">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href target="_blank"><span class="text-dark">商品中心</span><small class="ml-1x">政采云有限公司</small></a></h3>
+        <div>政采云有限公司由浙江省财政厅与阿里巴巴集团共同筹建成立，专注服务于政府采购各类用户，为政府采购交易和管理电子化提供整体解决方案。致力于打造政府采购云服务生态圈。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2019/02/21/业务架构/" title="业务架构"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        &copy; 2019 政采云有限公司
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank" rel="external nofollow noopener noreferrer"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank" rel="external nofollow noopener noreferrer">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: true,
+    appId: 'KMJNjsaJ380sukaFpxB9g8zH-gzGzoHsz',
+    appKey: 'L6oK8Q41FdWQSN26OJLvby8n',
+    placeholder: 'Touch me',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
