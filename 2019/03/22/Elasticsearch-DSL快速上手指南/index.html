@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="政采云商品中心技术博客">
 <meta property="og:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch） 原文链接: https://thare.cn/posts/41633c75.html  本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读官方文档为佳。 如何搜索向ES发送rest请求即可 1$ curl -XPOST http://ip:port?indexName/_se">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-22T14:18:30.898Z">
+<meta property="og:updated_time" content="2019-03-22T14:20:06.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Elasticsearch DSL快速上手指南">
 <meta name="twitter:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch） 原文链接: https://thare.cn/posts/41633c75.html  本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读官方文档为佳。 如何搜索向ES发送rest请求即可 1$ curl -XPOST http://ip:port?indexName/_se">
@@ -327,7 +327,6 @@
 <p>本文整理常用的Elasticsearch dsl，旨在帮助初学者能够快速构造dsl。如果想精通，还是阅读<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" rel="external nofollow noopener noreferrer" target="_blank">官方文档</a>为佳。</p>
 <h2 id="如何搜索"><a href="#如何搜索" class="headerlink" title="如何搜索"></a>如何搜索</h2><p>向ES发送rest请求即可</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> curl -XPOST http://ip:port?indexName/_search -d "json格式的dsl"</span><br></pre></td></tr></table></figure>
-<p><a href="http://confluence.cai-inc.com//pages/viewpage.action?pageId=15946640" rel="external nofollow noopener noreferrer" target="_blank">各环境ES地址</a></p>
 <h2 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h2><p>先介绍几种复合查询类型（需要包在bool中使用，详情看下方例子） <a href="http://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html" rel="external nofollow noopener noreferrer" target="_blank">官网传送门</a></p>
 <table>
 <thead>
