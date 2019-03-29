@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>商品ES索引同步历程 | 政采云商品中心 - 技术博客</title>
+  <meta name="description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch）原文链接: https://thare.cn/posts/23fc8314.html  前言最近对商品es同步应用（item-dump）做了些优化，感觉已经到了比较稳定成熟的阶段（啪啪），决定对整个商品es同步方案历程做个总结，希望能对其它同学在做es同步上提供参考。 商品索引在我们公司应该算是最复杂的索引，非常具有代表性：  数">
+<meta name="keywords" content="Elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="商品ES索引同步历程">
+<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/03/30/商品ES索引同步历程/index.html">
+<meta property="og:site_name" content="政采云商品中心技术博客">
+<meta property="og:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch）原文链接: https://thare.cn/posts/23fc8314.html  前言最近对商品es同步应用（item-dump）做了些优化，感觉已经到了比较稳定成熟的阶段（啪啪），决定对整个商品es同步方案历程做个总结，希望能对其它同学在做es同步上提供参考。 商品索引在我们公司应该算是最复杂的索引，非常具有代表性：  数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-29T17:13:28.321Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="商品ES索引同步历程">
+<meta name="twitter:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch）原文链接: https://thare.cn/posts/23fc8314.html  前言最近对商品es同步应用（item-dump）做了些优化，感觉已经到了比较稳定成熟的阶段（啪啪），决定对整个商品es同步方案历程做个总结，希望能对其它同学在做es同步上提供参考。 商品索引在我们公司应该算是最复杂的索引，非常具有代表性：  数">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/03/30/商品ES索引同步历程/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="政采云商品中心技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">商品中心</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">政采云有限公司</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 浙江 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                彬彬：像我这么NB的我们有7个<br>灰谷：码出自由<br>凉一：无极致，不code<br>双毅：more effective, no idle work<br>元芳：做正确的事<br>奕铭：人生苦短，join us<br>渊虹：我写代码养你
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/业务架构/">业务架构</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/业务架构/">业务架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能调优/">性能调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Elasticsearch/" style="font-size: 14px;">Elasticsearch</a> <a href="/tags/业务架构/" style="font-size: 13px;">业务架构</a> <a href="/tags/性能调优/" style="font-size: 13px;">性能调优</a> <a href="/tags/架构/" style="font-size: 13px;">架构</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Elasticsearch/">Elasticsearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/商品ES索引同步历程/" class="title">商品ES索引同步历程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-29T17:50:57.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/22/Elasticsearch-DSL快速上手指南/" class="title">Elasticsearch DSL快速上手指南</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-22T14:16:26.000Z" itemprop="datePublished">2019-03-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/业务架构/">业务架构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/21/业务架构/" class="title">业务架构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T04:48:16.000Z" itemprop="datePublished">2019-02-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ElasticSearch/">ElasticSearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/" class="title">ElasticSearch性能调优之设置refresh_interval实战</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-19T12:00:00.000Z" itemprop="datePublished">2019-02-19</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用独立性"><span class="toc-number">2.</span> <span class="toc-text">应用独立性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非独立"><span class="toc-number">2.1.</span> <span class="toc-text">非独立</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#独立"><span class="toc-number">2.2.</span> <span class="toc-text">独立</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#全量同步"><span class="toc-number">3.</span> <span class="toc-text">全量同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单机任务"><span class="toc-number">3.1.</span> <span class="toc-text">单机任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MQ分布式任务"><span class="toc-number">3.2.</span> <span class="toc-text">MQ分布式任务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#商品ID获取"><span class="toc-number">4.</span> <span class="toc-text">商品ID获取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#遍历商品表"><span class="toc-number">4.1.</span> <span class="toc-text">遍历商品表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取id从1取至max"><span class="toc-number">4.2.</span> <span class="toc-text">取id从1取至max</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用redis存储id"><span class="toc-number">4.3.</span> <span class="toc-text">使用redis存储id</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#热数据实时同步"><span class="toc-number">5.</span> <span class="toc-text">热数据实时同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同步所有"><span class="toc-number">5.1.</span> <span class="toc-text">同步所有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#按需同步"><span class="toc-number">5.2.</span> <span class="toc-text">按需同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#冷数据同步"><span class="toc-number">6.</span> <span class="toc-text">冷数据同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同步所有信息"><span class="toc-number">6.1.</span> <span class="toc-text">同步所有信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#只同步冷数据"><span class="toc-number">6.2.</span> <span class="toc-text">只同步冷数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#只同步有更新的冷数据（todo，感谢-白杨-提供方案）"><span class="toc-number">6.3.</span> <span class="toc-text">只同步有更新的冷数据（todo，感谢 @白杨 提供方案）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Canal消费者隔离"><span class="toc-number">7.</span> <span class="toc-text">Canal消费者隔离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#共用消费者"><span class="toc-number">7.1.</span> <span class="toc-text">共用消费者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隔离消费者"><span class="toc-number">7.2.</span> <span class="toc-text">隔离消费者</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#任务类型"><span class="toc-number">8.</span> <span class="toc-text">任务类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring-Scheduled-Job"><span class="toc-number">8.1.</span> <span class="toc-text">Spring Scheduled Job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Elastic-Job"><span class="toc-number">8.2.</span> <span class="toc-text">Elastic Job</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-be-continued"><span class="toc-number">9.</span> <span class="toc-text">To be continued</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-商品ES索引同步历程" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      商品ES索引同步历程
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/03/30/商品ES索引同步历程/" class="article-date">
+	  <time datetime="2019-03-29T17:50:57.000Z" itemprop="datePublished">2019-03-30</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Elasticsearch/">Elasticsearch</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Elasticsearch/">Elasticsearch</a>
+  </span>
+
+
+        
+
+	<span class="article-read hidden-xs">
+    	<i class="icon icon-eye-fill" aria-hidden="true"></i>
+    	<span id="/2019/03/30/商品ES索引同步历程/" class="leancloud_visitors" data-flag-title="商品ES索引同步历程">
+			<span class="leancloud-visitors-count">0</span>
+		</span>
+    </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/03/30/商品ES索引同步历程/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.9k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>作者简介: 凉一, 主要负责商品搜索（Elasticsearch）<br>原文链接: <a href="https://thare.cn/posts/23fc8314.html" rel="external nofollow noopener noreferrer" target="_blank">https://thare.cn/posts/23fc8314.html</a></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近对商品es同步应用（item-dump）做了些优化，感觉已经到了比较稳定成熟的阶段（啪啪），决定对整个商品es同步方案历程做个总结，希望能对其它同学在做es同步上提供参考。</p>
+<p>商品索引在我们公司应该算是最复杂的索引，非常具有代表性：</p>
+<ul>
+<li>数据量大（目前2500w+，日增商品数高达10w）</li>
+<li>实时性要求高（使用es搜索取代了一些慢sql，相当于把es当db来用）</li>
+<li>业务场景复杂，目前共有5套商品索引</li>
+<li>需要聚合非常多的业务信息，且聚合过程中需要做一些逻辑处理</li>
+<li>更新频率高</li>
+</ul>
+<p>下面会通过几个方面来讲讲我在商品es同步中做的一些改进。</p>
+<p>欢迎提出宝贵（吐）建（槽）议。</p>
+<h2 id="应用独立性"><a href="#应用独立性" class="headerlink" title="应用独立性"></a>应用独立性</h2><h3 id="非独立"><a href="#非独立" class="headerlink" title="非独立"></a>非独立</h3><p>最开始商品es同步的代码是与商品业务代码存在于同一项目，部署在同一jvm中。在初期这种方案可以节约开发时间和精力，但会带来以下问题：</p>
+<ul>
+<li>与业务相互影响<ul>
+<li>影响业务：es同步需要长时间调用大量接口且占用CPU从而影响正常业务请求。</li>
+<li>被业务影响：业务原因造成宕机导致同步失败。</li>
+</ul>
+</li>
+<li>发版不独立。es同步代码和部分业务代码分属不同团队，项目发版需要协调几个团队。且如果一方的代码需要回滚，又要做分支的处理重新发版，非常痛苦。</li>
+</ul>
+<h3 id="独立"><a href="#独立" class="headerlink" title="独立"></a>独立</h3><p>与业务应用独立，互不影响。</p>
+<h2 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h2><p>当在一个新环境部署时，需要先执行全量同步。</p>
+<h3 id="单机任务"><a href="#单机任务" class="headerlink" title="单机任务"></a>单机任务</h3><p>在一个JVM中获取全量的商品信息并同步至es中。这种方案有如下缺点：</p>
+<ul>
+<li>不能利用集群优势加快任务处理速度。</li>
+<li>不支持恢复。如果在任务执行过程中应用宕机，那么整个任务都要重新开始。</li>
+<li>如果要停止任务，需要重启应用。</li>
+</ul>
+<h3 id="MQ分布式任务"><a href="#MQ分布式任务" class="headerlink" title="MQ分布式任务"></a>MQ分布式任务</h3><p>将商品id发送到mq中，消费者消费消息即可。这种方案有如下优点：</p>
+<ul>
+<li>利用集群优势分布式处理，降低任务总耗时。</li>
+<li>可以通过调整mq消费者线程数来调整任务的处理速度。</li>
+<li>支持恢复。当应用在全量同步任务过程中发生宕机，重启后继续消费消息即可。</li>
+<li>停止同步任务只需重置mq消费位点。</li>
+</ul>
+<h2 id="商品ID获取"><a href="#商品ID获取" class="headerlink" title="商品ID获取"></a>商品ID获取</h2><p>全量同步方法的入参是商品id，因此需要获取到所有的商品id。</p>
+<h3 id="遍历商品表"><a href="#遍历商品表" class="headerlink" title="遍历商品表"></a>遍历商品表</h3><p>遍历商品表获取到所有的商品id，这种方法比较耗时（遍历全表）。且如果在中途查询db失败，那么需要重新开始获取所有id。</p>
+<h3 id="取id从1取至max"><a href="#取id从1取至max" class="headerlink" title="取id从1取至max"></a>取id从1取至max</h3><p>由于商品表id是连续递增的，可以先获取到maxId，然后从1到maxId遍历发送消息。这样几秒钟就能发送完所有消息，同时又能减少db查询。</p>
+<h3 id="使用redis存储id"><a href="#使用redis存储id" class="headerlink" title="使用redis存储id"></a>使用redis存储id</h3><p>商品表接入drds（分库分表）后，商品id不再是连续递增的，中间会存在很大的间隔。这种情况下，再通过从1到maxId遍历发送消息会导致消费方接收到很多不存在的id，从而造成很多的无用接口调用。</p>
+<p>使用redis存储商品id：</p>
+<ul>
+<li>冷启动需要初始化，遍历所有表获取全量的商品id（只需执行一次）</li>
+<li>对商品表做canal监听，有新商品产生则把id存入redis</li>
+</ul>
+<blockquote>
+<p>商品drds是通过id做路由的，通过ids查询时如果ids存在于不同表实例中，会对不同表做查询最后再汇总。为了节约汇总耗时，同时降低不必要的db性能损耗，我们对不同商品表实例做了redis的key区分（canal可以拿到表实例），这样在做dump时依次取不同实例的id，批量查询商品时就能保证db查询只会查询一个表实例。</p>
+</blockquote>
+<h2 id="热数据实时同步"><a href="#热数据实时同步" class="headerlink" title="热数据实时同步"></a>热数据实时同步</h2><p>当数据库中数据发生变更时，需要同步最新数据至es。可以通过canal监听表变更（Insert、Update、Delete）对文档做更新。</p>
+<h3 id="同步所有"><a href="#同步所有" class="headerlink" title="同步所有"></a>同步所有</h3><p>初期考虑实现简单，当监听的表发生变更时，根据变更的数据取到对应的商品id（如商品表变更取id，服务商品表变更取该服务商品对应的商品id），然后调用同步方法（代码复用，全量同步时使用的方法）。这种方法也是简单粗暴，不易出错，但有如下问题：</p>
+<ul>
+<li>有些不必要更新的信息也通过RPC调用去获取了，产生了不必要的调用，且增加了增量更新的耗时，从而降低了索引数据的实时性。</li>
+<li>当表变更数据量大时，由于RPC的调用耗时，更容易产生消息堆积，从而进一步降低了索引的实时性，且会增加调用的接口应用的压力。</li>
+<li>当与商品表有一对多关系的数据发生更新时，那么需要对该数据关联的多个商品做同步，这种数据就很难做到实时更新。如：假设一个协议下有m个商品，同步一个商品需要调用n个RPC接口组装数据，那么当这个协议信息发生变更时，需要调用m*n次RPC接口组装数据；而一个协议下可能有高达几万的商品，通过这种方式去实时更新商品的协议信息几乎不可能（单条消息消费时间长）。</li>
+</ul>
+<h3 id="按需同步"><a href="#按需同步" class="headerlink" title="按需同步"></a>按需同步</h3><p>对于变更的数据，其实只需要同步es中的部分数据即可。如上所举例子，某个协议发生了变更，只需要更新该协议下商品索引中的的协议信息，使用es的<strong>updateByQuery</strong>即可（类似sql的update语句：update items set protocol_info = x where  protocol_id = y）。这种方案有如下优点：</p>
+<ul>
+<li>canal消息中可以拿到更新的字段，对于es中不关心的字段的变更可以不做处理。</li>
+<li>由于canal消息中可以拿到更新后的字段，在更新es时不需要再通过RPC调用去获取数据（某些场景下还是需要通过rpc调用获取数据）。</li>
+</ul>
+<p>但这种方案也有一些缺点：</p>
+<ul>
+<li>代码编写时需要关心es中的字段和数据库的字段关系。</li>
+<li>新增字段需要更改增量更新的代码，开发过程中可能疏漏造成某些字段更新不及时。</li>
+</ul>
+<h2 id="冷数据同步"><a href="#冷数据同步" class="headerlink" title="冷数据同步"></a>冷数据同步</h2><p>商品索引中存在一些实时性不高（接受T+1的延迟）的信息。如：采购目录、仓库、配送地等。这类信息需要在每天非业务时间（00:00 ~ 07:00）同步一遍（同步需要调用大量rpc接口，为了不影响正常业务，需要在非业务时间段执行）。</p>
+<h3 id="同步所有信息"><a href="#同步所有信息" class="headerlink" title="同步所有信息"></a>同步所有信息</h3><p>每天进行一次全量同步，组装所有数据更新至索引。这种方式<strong>简单粗暴</strong>，且能够<strong>为增量同步做兜底</strong>（某些异常情况下增量同步可能会失败）。但同时也带来其它问题：</p>
+<ul>
+<li>全量同步需要大量调用接口，导致应用和数据库在全量同步期间相关接口qps飙升、db实例cpu使用率飙升（使用率存在峰值，需要消峰），存在隐患。</li>
+<li>索引数和商品数量不断增长，已经不能保证在非业务时间内对所有索引做完一次全量同步。</li>
+<li>每日依赖一个如此<strong>重</strong>的任务让人感觉非常不踏实。</li>
+</ul>
+<h3 id="只同步冷数据"><a href="#只同步冷数据" class="headerlink" title="只同步冷数据"></a>只同步冷数据</h3><p>只针对冷数据做同步，有如下优点：</p>
+<ul>
+<li>大大减少rpc接口调用，缓解了应用和db的压力，降低风险。</li>
+</ul>
+<p>但这种方案不能为增量同步做兜底了。因此需要保证<strong>热数据实时同步</strong>能够稳定。</p>
+<p>为了保证热数据能够实时同步稳定，我们做了以下处理：</p>
+<ul>
+<li>同步失败告警通知。若同步失败，第一时间通知到相关人员进行处理（关键字告警）。</li>
+<li>同步失败重试。若同步失败，对失败的消息进行重试。大部分情况下（目前没有遇到其它情况），同步失败往往是某些应用突然宕机，但都能在可接受时间内恢复。恢复成功后消息重试即可。</li>
+</ul>
+<h3 id="只同步有更新的冷数据（todo，感谢-白杨-提供方案）"><a href="#只同步有更新的冷数据（todo，感谢-白杨-提供方案）" class="headerlink" title="只同步有更新的冷数据（todo，感谢 @白杨 提供方案）"></a>只同步有更新的冷数据（todo，感谢 @白杨 提供方案）</h3><p>也不是所有的冷数据需要同步。一般情况下，冷数据更新频率比较低，可以考虑只针对当日更新的冷数据做更新（假定目前的数据是最新）。具体方案如下：</p>
+<ol>
+<li>记录冷数据表当日更新记录（可以使用canal监听，使用redis记录）</li>
+<li>根据更新记录，从es中搜索出需要更新的文档，只更新这些文档对应的冷数据</li>
+</ol>
+<p>例如，采购目录更新频率很低，商品通过区划和类目获取采购目录。当采购目录发生变更时，记录对应的区划和类目。更新采购目录时，通过发生了变更的区划和类目搜索出对应的商品，再对这些商品做更新即可。目前每天需要更新600w+商品的采购目录信息，使用这种方案可以大大减少接口调用。</p>
+<h2 id="Canal消费者隔离"><a href="#Canal消费者隔离" class="headerlink" title="Canal消费者隔离"></a>Canal消费者隔离</h2><p>所有canal消息均发向同一topic，根据tag区分（库名+表名，db_name.table_name）。</p>
+<h3 id="共用消费者"><a href="#共用消费者" class="headerlink" title="共用消费者"></a>共用消费者</h3><p>一个索引关心的多张表使用同一个消费者（订阅多个tag），消费者通过tag来区分表做不同操作。这种做法会可能会造成实时性要求不那么高的数据更新阻塞了实时性要求高的数据更新。如：一个商品索引的增量更新同时订阅了商品表和服务商品表（使用同一个消费者，商品信息的实时性高于服务商品信息）。当服务商品表发生大量插入时（供应商批量设置服务商品，最多高达10w+），会导致消息堆积。此时若商品表发生变更，商品信息的更新会滞后。</p>
+<h3 id="隔离消费者"><a href="#隔离消费者" class="headerlink" title="隔离消费者"></a>隔离消费者</h3><p>根据场景使用不同消费者消费不同表的canal消息，不同表消息互不影响。同时，可以根据不同数据的实时性要求对不同消费者设置不同线程数，增加灵活性。</p>
+<h2 id="任务类型"><a href="#任务类型" class="headerlink" title="任务类型"></a>任务类型</h2><h3 id="Spring-Scheduled-Job"><a href="#Spring-Scheduled-Job" class="headerlink" title="Spring Scheduled Job"></a>Spring Scheduled Job</h3><p>直接在方法上添加@Scheduled注解即可设置定时任务。这种方案实现简单，但不能随时调整触发时间，也不支持主动触发和关闭。</p>
+<h3 id="Elastic-Job"><a href="#Elastic-Job" class="headerlink" title="Elastic Job"></a>Elastic Job</h3><p>通过elastic job控制台可以很方便地调整触发时间，也能主动触发和关闭。</p>
+<h2 id="To-be-continued"><a href="#To-be-continued" class="headerlink" title="To be continued"></a>To be continued</h2><p>See you later…</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zcy-commodity.tech/2019/03/30/商品ES索引同步历程/" title="商品ES索引同步历程" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/03/30/商品ES索引同步历程/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external nofollow noopener noreferrer">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href target="_blank"><span class="text-dark">商品中心</span><small class="ml-1x">政采云有限公司</small></a></h3>
+        <div>政采云有限公司由浙江省财政厅与阿里巴巴集团共同筹建成立，专注服务于政府采购各类用户，为政府采购交易和管理电子化提供整体解决方案。致力于打造政府采购云服务生态圈。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2019/03/22/Elasticsearch-DSL快速上手指南/" title="Elasticsearch DSL快速上手指南"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        &copy; 2019 政采云有限公司
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank" rel="external nofollow noopener noreferrer"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank" rel="external nofollow noopener noreferrer">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: true,
+    appId: 'KMJNjsaJ380sukaFpxB9g8zH-gzGzoHsz',
+    appKey: 'L6oK8Q41FdWQSN26OJLvby8n',
+    placeholder: 'Touch me',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

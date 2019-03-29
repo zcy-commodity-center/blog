@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.zcy-commodity.tech/2019/03/30/%E5%95%86%E5%93%81ES%E7%B4%A2%E5%BC%95%E5%90%8C%E6%AD%A5%E5%8E%86%E7%A8%8B/</loc>
+    
+    <lastmod>2019-03-29T17:13:28.321Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.zcy-commodity.tech/2019/03/22/Elasticsearch-DSL%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%E6%8C%87%E5%8D%97/</loc>
     
-    <lastmod>2019-03-22T14:20:06.620Z</lastmod>
+    <lastmod>2019-03-29T17:12:21.468Z</lastmod>
     
   </url>
   
