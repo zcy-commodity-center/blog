@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>成为PM后的一些思考 | 政采云商品中心 - 技术博客</title>
+  <meta name="description" content="作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个  定义篇角色定义 个人理解 项目：大可指一个工程，小可指一个需求 管理：制定目标、">
+<meta name="keywords" content="项目管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="成为PM后的一些思考">
+<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/index.html">
+<meta property="og:site_name" content="政采云商品中心技术博客">
+<meta property="og:description" content="作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个  定义篇角色定义 个人理解 项目：大可指一个工程，小可指一个需求 管理：制定目标、">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-01T03:05:40.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="成为PM后的一些思考">
+<meta name="twitter:description" content="作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个  定义篇角色定义 个人理解 项目：大可指一个工程，小可指一个需求 管理：制定目标、">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="政采云商品中心技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">商品中心</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">政采云有限公司</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 浙江 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                彬彬：像我这么NB的我们有7个<br>灰谷：码出自由<br>凉一：无极致，不code<br>双毅：more effective, no idle work<br>元芳：做正确的事<br>奕铭：人生苦短，join us<br>渊虹：我写代码养你
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/业务架构/">业务架构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目管理/">项目管理</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/业务架构/">业务架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能调优/">性能调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/项目管理/">项目管理</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Elasticsearch/" style="font-size: 14px;">Elasticsearch</a> <a href="/tags/业务架构/" style="font-size: 13px;">业务架构</a> <a href="/tags/性能调优/" style="font-size: 13px;">性能调优</a> <a href="/tags/架构/" style="font-size: 13px;">架构</a> <a href="/tags/项目管理/" style="font-size: 13px;">项目管理</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/项目管理/">项目管理</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/04/01/成为PM后的一些思考/" class="title">成为PM后的一些思考</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-31T16:05:29.000Z" itemprop="datePublished">2019-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Elasticsearch/">Elasticsearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/商品ES索引同步历程/" class="title">商品ES索引同步历程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-29T17:50:57.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/22/Elasticsearch-DSL快速上手指南/" class="title">Elasticsearch DSL快速上手指南</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-22T14:16:26.000Z" itemprop="datePublished">2019-03-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/业务架构/">业务架构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/21/业务架构/" class="title">业务架构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T04:48:16.000Z" itemprop="datePublished">2019-02-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ElasticSearch/">ElasticSearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/" class="title">ElasticSearch性能调优之设置refresh_interval实战</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-19T12:00:00.000Z" itemprop="datePublished">2019-02-19</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义篇"><span class="toc-number">1.</span> <span class="toc-text">定义篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#角色定义"><span class="toc-number">1.1.</span> <span class="toc-text">角色定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目管理四要素"><span class="toc-number">1.2.</span> <span class="toc-text">项目管理四要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日常"><span class="toc-number">1.3.</span> <span class="toc-text">日常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#个人看法篇"><span class="toc-number">2.</span> <span class="toc-text">个人看法篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#我对项目管理的看法"><span class="toc-number">2.1.</span> <span class="toc-text">我对项目管理的看法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是项目管理"><span class="toc-number">2.1.1.</span> <span class="toc-text">什么是项目管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#项目管理的意义-价值"><span class="toc-number">2.1.2.</span> <span class="toc-text">项目管理的意义/价值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目管理的前置条件"><span class="toc-number">2.2.</span> <span class="toc-text">项目管理的前置条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行篇"><span class="toc-number">3.</span> <span class="toc-text">执行篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何选择资源？"><span class="toc-number">3.1.</span> <span class="toc-text">如何选择资源？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选需求"><span class="toc-number">3.1.1.</span> <span class="toc-text">选需求</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#选人力"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">选人力</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何更好的执行"><span class="toc-number">3.2.</span> <span class="toc-text">如何更好的执行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#对个人"><span class="toc-number">3.2.1.</span> <span class="toc-text">对个人</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对他人"><span class="toc-number">3.2.2.</span> <span class="toc-text">对他人</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对流程"><span class="toc-number">3.2.3.</span> <span class="toc-text">对流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结篇"><span class="toc-number">4.</span> <span class="toc-text">总结篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#我们的关系"><span class="toc-number">4.1.</span> <span class="toc-text">我们的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#卓有成效的管理要素"><span class="toc-number">4.2.</span> <span class="toc-text">卓有成效的管理要素</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-成为PM后的一些思考" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      成为PM后的一些思考
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/04/01/成为PM后的一些思考/" class="article-date">
+	  <time datetime="2019-03-31T16:05:29.000Z" itemprop="datePublished">2019-04-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/项目管理/">项目管理</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/项目管理/">项目管理</a>
+  </span>
+
+
+        
+
+	<span class="article-read hidden-xs">
+    	<i class="icon icon-eye-fill" aria-hidden="true"></i>
+    	<span id="/2019/04/01/成为PM后的一些思考/" class="leancloud_visitors" data-flag-title="成为PM后的一些思考">
+			<span class="leancloud-visitors-count">0</span>
+		</span>
+    </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/01/成为PM后的一些思考/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM<br>背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个</p>
+</blockquote>
+<h2 id="定义篇"><a href="#定义篇" class="headerlink" title="定义篇"></a>定义篇</h2><h3 id="角色定义"><a href="#角色定义" class="headerlink" title="角色定义"></a>角色定义</h3><ul>
+<li>个人理解<ul>
+<li>项目：大可指一个工程，小可指一个需求</li>
+<li>管理：制定目标、实施计划；管控实施进度、测试进度；风险点把控；结果验收；事后总结</li>
+</ul>
+</li>
+<li>使命<ul>
+<li>各司其职、团结一致、用人所长、高效交付</li>
+</ul>
+</li>
+</ul>
+<h3 id="项目管理四要素"><a href="#项目管理四要素" class="headerlink" title="项目管理四要素"></a>项目管理四要素</h3><ul>
+<li>战略目标<ul>
+<li>明确项目目标、价值</li>
+<li>找出关键路径，定义项目里程碑（版本计划、提测日期、发布日期等）</li>
+</ul>
+</li>
+<li>优秀人才<ul>
+<li>使用能干和优秀的人来作为负责人或核心骨干，大大提高项目的成功率</li>
+</ul>
+</li>
+<li>制度流程<ul>
+<li>项目生命周期（立项-》需求导入-》(后端、前端、测试) 评审-》开发阶段-》测试阶段-》演示-》上线）</li>
+</ul>
+</li>
+<li>管理工具<ul>
+<li>分析工具（XMind）</li>
+<li>拆解工具（OmniPlan）</li>
+<li>跟踪工具（禅道、JIRA）</li>
+</ul>
+</li>
+</ul>
+<h3 id="日常"><a href="#日常" class="headerlink" title="日常"></a>日常</h3><ul>
+<li>需求守门人<ul>
+<li>每个需求都需要经过PM都要知情，无论大小、紧急</li>
+<li>由PM决定是否有必要做</li>
+</ul>
+</li>
+<li>上下游协调人<ul>
+<li>对内资源分配、调拨</li>
+<li>对外资源协调</li>
+</ul>
+</li>
+<li>明确规划<ul>
+<li>和产品紧密配合，了解季度或半年度产品规划</li>
+</ul>
+</li>
+<li>编排计划<ul>
+<li>制定月度计划，版本计划</li>
+<li>明确资源投入和释放情况</li>
+</ul>
+</li>
+<li>进度跟踪<ul>
+<li>每周版本指定内容较多的那个人主要负责，负责分支的拉取、发布和代码合并，发版出现问题及时反馈至PM，由PM去协调</li>
+<li>针对以项目为维度的版本，统一指定一人主要负责，出现资源或者解决不了的问题，反馈至PM，由PM去协调</li>
+</ul>
+</li>
+<li>结果查证<ul>
+<li>由PM去和主要负责人沟通版本或项目情况，项目的最终结果如何？</li>
+</ul>
+</li>
+<li>事后复盘<ul>
+<li>如果在版本或项目落地的过程中出现问题，需要事后组织复盘，反思问题，落实action</li>
+</ul>
+</li>
+<li>action落地<ul>
+<li>通过jira的方式建立跟踪action，关注jira处理进度来跟进action落地情况</li>
+</ul>
+</li>
+</ul>
+<h2 id="个人看法篇"><a href="#个人看法篇" class="headerlink" title="个人看法篇"></a>个人看法篇</h2><h3 id="我对项目管理的看法"><a href="#我对项目管理的看法" class="headerlink" title="我对项目管理的看法"></a>我对项目管理的看法</h3><h4 id="什么是项目管理"><a href="#什么是项目管理" class="headerlink" title="什么是项目管理"></a><strong>什么是项目管理</strong></h4><p>针对产品的需求规划，协调一定的资源投入，并达到如期交付的过程</p>
+<h4 id="项目管理的意义-价值"><a href="#项目管理的意义-价值" class="headerlink" title="项目管理的意义/价值"></a><strong>项目管理的意义/价值</strong></h4><ul>
+<li>明确目标</li>
+<li>目标拆解</li>
+<li>时间控制</li>
+<li>资源协调</li>
+<li>全局把控</li>
+</ul>
+<h3 id="项目管理的前置条件"><a href="#项目管理的前置条件" class="headerlink" title="项目管理的前置条件"></a><strong>项目管理的前置条件</strong></h3><ul>
+<li>需求理解度</li>
+<li>项目熟悉度</li>
+<li>人员认知度</li>
+<li>过程管控度</li>
+</ul>
+<h2 id="执行篇"><a href="#执行篇" class="headerlink" title="执行篇"></a>执行篇</h2><h3 id="如何选择资源？"><a href="#如何选择资源？" class="headerlink" title="如何选择资源？"></a>如何选择资源？</h3><h4 id="选需求"><a href="#选需求" class="headerlink" title="选需求"></a>选需求</h4><blockquote>
+<p>前提：明确需求内容</p>
+<p>选择条件：紧急程度、影响面及价值（需求价值和人员价值）</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">紧急程度\重要性</th>
+<th style="text-align:center">重要</th>
+<th style="text-align:center">不重要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">紧急</td>
+<td style="text-align:center">✅</td>
+<td style="text-align:center">✔️</td>
+</tr>
+<tr>
+<td style="text-align:center">不紧急</td>
+<td style="text-align:center">✔️</td>
+<td style="text-align:center">❌</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>P1<ul>
+<li>紧急程度高、价值大</li>
+<li>紧急程度高、影响面大</li>
+</ul>
+</li>
+<li>P2<ul>
+<li>紧急程度高、价值不大或影响面不大</li>
+<li>价值大</li>
+</ul>
+</li>
+<li>P3<ul>
+<li>紧急程度不高、影响面大</li>
+</ul>
+</li>
+</ul>
+<h5 id="选人力"><a href="#选人力" class="headerlink" title="选人力"></a>选人力</h5><blockquote>
+<p>影响因素：根据需求紧急程度</p>
+<p>选择条件：业务熟悉度、需求把控度、人员价值体现度</p>
+</blockquote>
+<ul>
+<li>紧急需求<ul>
+<li>业务熟悉度高、需求把控度高</li>
+</ul>
+</li>
+<li>非紧急需求<ul>
+<li>需求把控度高、人员价值体现度高（团队成员之间不会陷入各自的“安逸”区）</li>
+</ul>
+</li>
+</ul>
+<h3 id="如何更好的执行"><a href="#如何更好的执行" class="headerlink" title="如何更好的执行"></a>如何更好的执行</h3><h4 id="对个人"><a href="#对个人" class="headerlink" title="对个人"></a><strong>对个人</strong></h4><ul>
+<li>掌控时间<ul>
+<li>诊断自己的时间</li>
+<li>多反思、总结时间如何浪费</li>
+</ul>
+</li>
+<li>高效会议<ul>
+<li>明确知道会议的目的，以及能从会议上得到什么</li>
+</ul>
+</li>
+<li>有效决策<ul>
+<li>决策就是需要提前思考多条可行路径，抉择出一条最优解。而并非先下结论，然后找事实去支撑</li>
+</ul>
+</li>
+<li>要事优先<ul>
+<li>重将来而不重过去</li>
+<li>重视机会，不能只看到困难</li>
+<li>选择自己的方向，而不盲从</li>
+<li>目标要高，要有新意，不能只求安全和方便</li>
+</ul>
+</li>
+</ul>
+<h4 id="对他人"><a href="#对他人" class="headerlink" title="对他人"></a><strong>对他人</strong></h4><ul>
+<li>分配有贡献的事<ul>
+<li>做有挑战的事，做有贡献的事。</li>
+<li>发现机会，克服困难，成就自我</li>
+</ul>
+</li>
+<li>相信他人<ul>
+<li>人无完人，要重视他人的长处。要先知道 其 “能做什么”，然后在对其 “苛求做什么”</li>
+</ul>
+</li>
+<li>培养专注<ul>
+<li>同一时间有多件事并行，要明确事情优先级，一次只做好一件事，更能加快工作速度</li>
+</ul>
+</li>
+</ul>
+<h4 id="对流程"><a href="#对流程" class="headerlink" title="对流程"></a><strong>对流程</strong></h4><ul>
+<li>明确正常交付流程<ul>
+<li>需求可行性分析-》毛估 -》导入 -》评审-》技术设计-》明确时间-》投入研发-》提测-》测试-》发版</li>
+</ul>
+</li>
+<li>紧急插入流程<ul>
+<li>明确需求的价值及影响</li>
+<li>定义紧急需求插入窗口</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结篇"><a href="#总结篇" class="headerlink" title="总结篇"></a>总结篇</h2><h3 id="我们的关系"><a href="#我们的关系" class="headerlink" title="我们的关系"></a>我们的关系</h3><ul>
+<li>战友（目标一致）</li>
+<li>互相尊重（人人平等）</li>
+<li>有问题要及时指出（共同进步）</li>
+</ul>
+<h3 id="卓有成效的管理要素"><a href="#卓有成效的管理要素" class="headerlink" title="卓有成效的管理要素"></a>卓有成效的管理要素</h3><ul>
+<li>掌控时间</li>
+<li>重视贡献</li>
+<li>善用长处</li>
+<li>要事优先</li>
+<li>有效决策</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/" title="成为PM后的一些思考" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external nofollow noopener noreferrer">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href target="_blank"><span class="text-dark">商品中心</span><small class="ml-1x">政采云有限公司</small></a></h3>
+        <div>政采云有限公司由浙江省财政厅与阿里巴巴集团共同筹建成立，专注服务于政府采购各类用户，为政府采购交易和管理电子化提供整体解决方案。致力于打造政府采购云服务生态圈。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2019/03/30/商品ES索引同步历程/" title="商品ES索引同步历程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        &copy; 2019 政采云有限公司
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank" rel="external nofollow noopener noreferrer"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank" rel="external nofollow noopener noreferrer">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: true,
+    appId: 'KMJNjsaJ380sukaFpxB9g8zH-gzGzoHsz',
+    appKey: 'L6oK8Q41FdWQSN26OJLvby8n',
+    placeholder: 'Touch me',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
