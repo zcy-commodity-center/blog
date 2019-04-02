@@ -17,21 +17,31 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>成为PM后的一些思考 | 政采云商品中心 - 技术博客</title>
-  <meta name="description" content="作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个  定义篇角色定义 个人理解 项目：大可指一个工程，小可指一个需求 管理：制定目标、">
-<meta name="keywords" content="项目管理">
+  <title>YourKit-Java性能分析工具的应用 | 政采云商品中心 - 技术博客</title>
+  <meta name="description" content="作者简介：灰谷，主要负责协议商品管理。    YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息  目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的">
+<meta name="keywords" content="YourKit">
 <meta property="og:type" content="article">
-<meta property="og:title" content="成为PM后的一些思考">
-<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/index.html">
+<meta property="og:title" content="YourKit-Java性能分析工具的应用">
+<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/index.html">
 <meta property="og:site_name" content="政采云商品中心技术博客">
-<meta property="og:description" content="作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个  定义篇角色定义 个人理解 项目：大可指一个工程，小可指一个需求 管理：制定目标、">
+<meta property="og:description" content="作者简介：灰谷，主要负责协议商品管理。    YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息  目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-01T03:05:40.512Z">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/idea_wizard.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-03.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-04.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-05.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-07.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-06.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-08.png">
+<meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-09.png">
+<meta property="og:updated_time" content="2019-04-02T07:08:55.143Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="成为PM后的一些思考">
-<meta name="twitter:description" content="作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个  定义篇角色定义 个人理解 项目：大可指一个工程，小可指一个需求 管理：制定目标、">
+<meta name="twitter:title" content="YourKit-Java性能分析工具的应用">
+<meta name="twitter:description" content="作者简介：灰谷，主要负责协议商品管理。    YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息  目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的">
+<meta name="twitter:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/index.html">
+  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/index.html">
   
     <link rel="alternate" href="/atom.xml" title="政采云商品中心技术博客" type="application/atom+xml">
   
@@ -303,21 +313,21 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义篇"><span class="toc-number">1.</span> <span class="toc-text">定义篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#角色定义"><span class="toc-number">1.1.</span> <span class="toc-text">角色定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目管理四要素"><span class="toc-number">1.2.</span> <span class="toc-text">项目管理四要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日常"><span class="toc-number">1.3.</span> <span class="toc-text">日常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#个人看法篇"><span class="toc-number">2.</span> <span class="toc-text">个人看法篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#我对项目管理的看法"><span class="toc-number">2.1.</span> <span class="toc-text">我对项目管理的看法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是项目管理"><span class="toc-number">2.1.1.</span> <span class="toc-text">什么是项目管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#项目管理的意义-价值"><span class="toc-number">2.1.2.</span> <span class="toc-text">项目管理的意义/价值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目管理的前置条件"><span class="toc-number">2.2.</span> <span class="toc-text">项目管理的前置条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行篇"><span class="toc-number">3.</span> <span class="toc-text">执行篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何选择资源？"><span class="toc-number">3.1.</span> <span class="toc-text">如何选择资源？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选需求"><span class="toc-number">3.1.1.</span> <span class="toc-text">选需求</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#选人力"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">选人力</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何更好的执行"><span class="toc-number">3.2.</span> <span class="toc-text">如何更好的执行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#对个人"><span class="toc-number">3.2.1.</span> <span class="toc-text">对个人</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对他人"><span class="toc-number">3.2.2.</span> <span class="toc-text">对他人</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对流程"><span class="toc-number">3.2.3.</span> <span class="toc-text">对流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结篇"><span class="toc-number">4.</span> <span class="toc-text">总结篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#我们的关系"><span class="toc-number">4.1.</span> <span class="toc-text">我们的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#卓有成效的管理要素"><span class="toc-number">4.2.</span> <span class="toc-text">卓有成效的管理要素</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装与启动"><span class="toc-number">1.</span> <span class="toc-text">安装与启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用场景"><span class="toc-number">2.</span> <span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#场景一：调用链很长的方法，耗时很长，如何知道瓶颈在哪？"><span class="toc-number">2.1.</span> <span class="toc-text">场景一：调用链很长的方法，耗时很长，如何知道瓶颈在哪？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#场景二：系统响应慢，发现CPU使用率一直很高，如何确认问题点？"><span class="toc-number">2.2.</span> <span class="toc-text">场景二：系统响应慢，发现CPU使用率一直很高，如何确认问题点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#场景三：系统可用内存不足"><span class="toc-number">2.3.</span> <span class="toc-text">场景三：系统可用内存不足</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类似工具"><span class="toc-number">3.</span> <span class="toc-text">类似工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
     </nav>
   </div>
 </aside>
 
 <main class="main" role="main">
   <div class="content">
-  <article id="post-成为PM后的一些思考" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-YourKit-Java性能分析工具的应用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      成为PM后的一些思考
+      YourKit-Java性能分析工具的应用
     </h1>
   
 
@@ -325,20 +335,20 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2019/04/01/成为PM后的一些思考/" class="article-date">
-	  <time datetime="2019-03-31T16:05:29.000Z" itemprop="datePublished">2019-04-01</time>
+	<a href="/2019/04/02/YourKit-Java性能分析工具的应用/" class="article-date">
+	  <time datetime="2019-04-02T03:35:54.000Z" itemprop="datePublished">2019-04-02</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/项目管理/">项目管理</a>
+    <a class="article-category-link" href="/categories/实用工具/">实用工具</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/项目管理/">项目管理</a>
+	<a class="article-tag-link" href="/tags/YourKit/">YourKit</a>
   </span>
 
 
@@ -346,18 +356,18 @@
 
 	<span class="article-read hidden-xs">
     	<i class="icon icon-eye-fill" aria-hidden="true"></i>
-    	<span id="/2019/04/01/成为PM后的一些思考/" class="leancloud_visitors" data-flag-title="成为PM后的一些思考">
+    	<span id="/2019/04/02/YourKit-Java性能分析工具的应用/" class="leancloud_visitors" data-flag-title="YourKit-Java性能分析工具的应用">
 			<span class="leancloud-visitors-count">0</span>
 		</span>
     </span>
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/01/成为PM后的一些思考/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/02/YourKit-Java性能分析工具的应用/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.1k(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
 	
 
       </div>
@@ -365,206 +375,77 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <blockquote>
-<p>作者简介: 奕铭，主要负责商品模块，兼职商品、协议PM<br>背景：在互联网微服务的大浪潮下，公司内部都按业务领域来划分组织。在公司快速探索业务的过程中，任何一个产品的出现基本都要跨内部多个业务域来实现。同时为了在业务落地的过程中实现快速对接和流程规范，今年特成立了一个按照业务域来划分的PMO组织，而我被选择成为其中一个</p>
+<p>作者简介：灰谷，主要负责协议商品管理。</p>
 </blockquote>
-<h2 id="定义篇"><a href="#定义篇" class="headerlink" title="定义篇"></a>定义篇</h2><h3 id="角色定义"><a href="#角色定义" class="headerlink" title="角色定义"></a>角色定义</h3><ul>
-<li>个人理解<ul>
-<li>项目：大可指一个工程，小可指一个需求</li>
-<li>管理：制定目标、实施计划；管控实施进度、测试进度；风险点把控；结果验收；事后总结</li>
-</ul>
-</li>
-<li>使命<ul>
-<li>各司其职、团结一致、用人所长、高效交付</li>
-</ul>
-</li>
-</ul>
-<h3 id="项目管理四要素"><a href="#项目管理四要素" class="headerlink" title="项目管理四要素"></a>项目管理四要素</h3><ul>
-<li>战略目标<ul>
-<li>明确项目目标、价值</li>
-<li>找出关键路径，定义项目里程碑（版本计划、提测日期、发布日期等）</li>
-</ul>
-</li>
-<li>优秀人才<ul>
-<li>使用能干和优秀的人来作为负责人或核心骨干，大大提高项目的成功率</li>
-</ul>
-</li>
-<li>制度流程<ul>
-<li>项目生命周期（立项-》需求导入-》(后端、前端、测试) 评审-》开发阶段-》测试阶段-》演示-》上线）</li>
-</ul>
-</li>
-<li>管理工具<ul>
-<li>分析工具（XMind）</li>
-<li>拆解工具（OmniPlan）</li>
-<li>跟踪工具（禅道、JIRA）</li>
-</ul>
-</li>
-</ul>
-<h3 id="日常"><a href="#日常" class="headerlink" title="日常"></a>日常</h3><ul>
-<li>需求守门人<ul>
-<li>每个需求都需要经过PM都要知情，无论大小、紧急</li>
-<li>由PM决定是否有必要做</li>
-</ul>
-</li>
-<li>上下游协调人<ul>
-<li>对内资源分配、调拨</li>
-<li>对外资源协调</li>
-</ul>
-</li>
-<li>明确规划<ul>
-<li>和产品紧密配合，了解季度或半年度产品规划</li>
-</ul>
-</li>
-<li>编排计划<ul>
-<li>制定月度计划，版本计划</li>
-<li>明确资源投入和释放情况</li>
-</ul>
-</li>
-<li>进度跟踪<ul>
-<li>每周版本指定内容较多的那个人主要负责，负责分支的拉取、发布和代码合并，发版出现问题及时反馈至PM，由PM去协调</li>
-<li>针对以项目为维度的版本，统一指定一人主要负责，出现资源或者解决不了的问题，反馈至PM，由PM去协调</li>
-</ul>
-</li>
-<li>结果查证<ul>
-<li>由PM去和主要负责人沟通版本或项目情况，项目的最终结果如何？</li>
-</ul>
-</li>
-<li>事后复盘<ul>
-<li>如果在版本或项目落地的过程中出现问题，需要事后组织复盘，反思问题，落实action</li>
-</ul>
-</li>
-<li>action落地<ul>
-<li>通过jira的方式建立跟踪action，关注jira处理进度来跟进action落地情况</li>
-</ul>
-</li>
-</ul>
-<h2 id="个人看法篇"><a href="#个人看法篇" class="headerlink" title="个人看法篇"></a>个人看法篇</h2><h3 id="我对项目管理的看法"><a href="#我对项目管理的看法" class="headerlink" title="我对项目管理的看法"></a>我对项目管理的看法</h3><h4 id="什么是项目管理"><a href="#什么是项目管理" class="headerlink" title="什么是项目管理"></a><strong>什么是项目管理</strong></h4><p>针对产品的需求规划，协调一定的资源投入，并达到如期交付的过程</p>
-<h4 id="项目管理的意义-价值"><a href="#项目管理的意义-价值" class="headerlink" title="项目管理的意义/价值"></a><strong>项目管理的意义/价值</strong></h4><ul>
-<li>明确目标</li>
-<li>目标拆解</li>
-<li>时间控制</li>
-<li>资源协调</li>
-<li>全局把控</li>
-</ul>
-<h3 id="项目管理的前置条件"><a href="#项目管理的前置条件" class="headerlink" title="项目管理的前置条件"></a><strong>项目管理的前置条件</strong></h3><ul>
-<li>需求理解度</li>
-<li>项目熟悉度</li>
-<li>人员认知度</li>
-<li>过程管控度</li>
-</ul>
-<h2 id="执行篇"><a href="#执行篇" class="headerlink" title="执行篇"></a>执行篇</h2><h3 id="如何选择资源？"><a href="#如何选择资源？" class="headerlink" title="如何选择资源？"></a>如何选择资源？</h3><h4 id="选需求"><a href="#选需求" class="headerlink" title="选需求"></a>选需求</h4><blockquote>
-<p>前提：明确需求内容</p>
-<p>选择条件：紧急程度、影响面及价值（需求价值和人员价值）</p>
+<p><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg" alt></p>
+<blockquote>
+<p>YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息</p>
 </blockquote>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">紧急程度\重要性</th>
-<th style="text-align:center">重要</th>
-<th style="text-align:center">不重要</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">紧急</td>
-<td style="text-align:center">✅</td>
-<td style="text-align:center">✔️</td>
-</tr>
-<tr>
-<td style="text-align:center">不紧急</td>
-<td style="text-align:center">✔️</td>
-<td style="text-align:center">❌</td>
-</tr>
-</tbody>
-</table>
+<p>目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的健康状况，但是这些工具都只支持线上环境，在<strong>本地开发阶段</strong>无法有效利用这些工具，那么我们如何在开发阶段定位性能问题？打印log记录时间吗？还是靠肉眼看代码？这些方式真对一些长事务、分布式调用、批量操作的场景就不适用了，本文介绍的 <a href="https://www.yourkit.com/" rel="external nofollow noopener noreferrer" target="_blank">YourKit</a> 可以帮助我们做到这一点。  </p>
+<a id="more"></a>
+<h2 id="安装与启动"><a href="#安装与启动" class="headerlink" title="安装与启动"></a>安装与启动</h2><p>YourKit的一大优点就是安装和使用特别简单：</p>
 <ul>
-<li>P1<ul>
-<li>紧急程度高、价值大</li>
-<li>紧急程度高、影响面大</li>
+<li>下载、安装完成后YourKit会提示要安装哪个 IDE 的插件，选了 IntelliJ IDEA之后，插件自动安装<ul>
+<li>下载地址：<a href="https://www.yourkit.com/java/profiler/download/" rel="external nofollow noopener noreferrer" target="_blank">https://www.yourkit.com/java/profiler/download/</a>  （速度特别的慢）<br><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/idea_wizard.png" alt="YourKit-01"></li>
 </ul>
 </li>
-<li>P2<ul>
-<li>紧急程度高、价值不大或影响面不大</li>
-<li>价值大</li>
+<li>工具栏中多出 YourKit 启动按钮，直接启动即可，<strong>啥参数都不用配</strong>。<br><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-03.png" alt="YourKit-03"></li>
+<li>启动后的界面：<br><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-04.png" alt="YourKit-04"></li>
 </ul>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>我们选取几种开发过程常见的场景学习 YourKit 的应用  </p>
+<ol>
+<li><p>有一个调用链很长的方法，耗时很长，如何知道瓶颈在哪？</p>
 </li>
-<li>P3<ul>
-<li>紧急程度不高、影响面大</li>
-</ul>
+<li><p>系统响应慢，发现CPU使用率一直很高，如何确认问题点？</p>
 </li>
-</ul>
-<h5 id="选人力"><a href="#选人力" class="headerlink" title="选人力"></a>选人力</h5><blockquote>
-<p>影响因素：根据需求紧急程度</p>
-<p>选择条件：业务熟悉度、需求把控度、人员价值体现度</p>
-</blockquote>
+<li><p>系统OOM，怀疑内存泄漏，如何定位问题？</p>
+</li>
+</ol>
+<h3 id="场景一：调用链很长的方法，耗时很长，如何知道瓶颈在哪？"><a href="#场景一：调用链很长的方法，耗时很长，如何知道瓶颈在哪？" class="headerlink" title="场景一：调用链很长的方法，耗时很长，如何知道瓶颈在哪？"></a>场景一：调用链很长的方法，耗时很长，如何知道瓶颈在哪？</h3><p>商品发布功能目前耗时1600ms+，目标耗时500ms-，针对这种性能的分析使用 CPU 分析，步骤：</p>
+<ol>
+<li><p><strong>Start CPU Profiling</strong><br>开始监控后，可以实时看到CPU的基本信息，要想查看详细信息，保存快照后可以查看<br>支持三种分析模式：</p>
 <ul>
-<li>紧急需求<ul>
-<li>业务熟悉度高、需求把控度高</li>
+<li>Sampling (抽样)<ul>
+<li>该模式会定期的访问栈，评估出运行较慢的代码。该模式没有方法的调用次数记录，仅有cpu时间。该模式是在进行提供瓶颈分析中最好的模式，对服务器额外开销很小。是最常用的模式。</li>
 </ul>
 </li>
-<li>非紧急需求<ul>
-<li>需求把控度高、人员价值体现度高（团队成员之间不会陷入各自的“安逸”区）</li>
+<li>Tracing (追踪)<ul>
+<li>方法耗时统计更为精准，还可以统计方法执行的次数，开销随着统计方法的数量增加而增加</li>
 </ul>
 </li>
-</ul>
-<h3 id="如何更好的执行"><a href="#如何更好的执行" class="headerlink" title="如何更好的执行"></a>如何更好的执行</h3><h4 id="对个人"><a href="#对个人" class="headerlink" title="对个人"></a><strong>对个人</strong></h4><ul>
-<li>掌控时间<ul>
-<li>诊断自己的时间</li>
-<li>多反思、总结时间如何浪费</li>
-</ul>
-</li>
-<li>高效会议<ul>
-<li>明确知道会议的目的，以及能从会议上得到什么</li>
-</ul>
-</li>
-<li>有效决策<ul>
-<li>决策就是需要提前思考多条可行路径，抉择出一条最优解。而并非先下结论，然后找事实去支撑</li>
-</ul>
-</li>
-<li>要事优先<ul>
-<li>重将来而不重过去</li>
-<li>重视机会，不能只看到困难</li>
-<li>选择自己的方向，而不盲从</li>
-<li>目标要高，要有新意，不能只求安全和方便</li>
+<li>Call counting（记数）<ul>
+<li>开销最低的模式，可统计方法执行次数</li>
 </ul>
 </li>
 </ul>
-<h4 id="对他人"><a href="#对他人" class="headerlink" title="对他人"></a><strong>对他人</strong></h4><ul>
-<li>分配有贡献的事<ul>
-<li>做有挑战的事，做有贡献的事。</li>
-<li>发现机会，克服困难，成就自我</li>
-</ul>
 </li>
-<li>相信他人<ul>
-<li>人无完人，要重视他人的长处。要先知道 其 “能做什么”，然后在对其 “苛求做什么”</li>
-</ul>
+<li><p><strong>执行商品发布功能</strong></p>
 </li>
-<li>培养专注<ul>
-<li>同一时间有多件事并行，要明确事情优先级，一次只做好一件事，更能加快工作速度</li>
+<li><p><strong>Capture Performance Snapshot（分析快照）</strong></p>
+<ul>
+<li>Method list: 可以直接搜索目标方法，查看调用链中每个方法的耗时，快速定位有问题的方法</li>
+<li>Database：可以查看执行的SQL以及每条SQL的耗时、执行次数，找出性能低、频率高sql进行优化</li>
 </ul>
+<p><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-05.png" alt="YourKit-05"></p>
 </li>
+</ol>
+<h3 id="场景二：系统响应慢，发现CPU使用率一直很高，如何确认问题点？"><a href="#场景二：系统响应慢，发现CPU使用率一直很高，如何确认问题点？" class="headerlink" title="场景二：系统响应慢，发现CPU使用率一直很高，如何确认问题点？"></a>场景二：系统响应慢，发现CPU使用率一直很高，如何确认问题点？</h3><ul>
+<li>模拟一个死循环的场景：因为没有考虑到接口返回的异常数据，导致循环调用接口时不能正常中止</li>
 </ul>
-<h4 id="对流程"><a href="#对流程" class="headerlink" title="对流程"></a><strong>对流程</strong></h4><ul>
-<li>明确正常交付流程<ul>
-<li>需求可行性分析-》毛估 -》导入 -》评审-》技术设计-》明确时间-》投入研发-》提测-》测试-》发版</li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 伪代码：</span></span><br><span class="line"><span class="comment">* 需求：获取某供应商的全部商品，不分页</span></span><br><span class="line"><span class="comment">* 原商品接口改为分页接口，并且不支持获取全部数据</span></span><br><span class="line"><span class="comment">* 为了兼容原有业务，改为循环查询出所有商品，然后一次性返回</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;GoodsDTO&gt; <span class="title">getGoodsDTOList</span><span class="params">(Long supplierId)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pageNo = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">boolean</span> isEmpty;</span><br><span class="line">    List&lt;GoodsDTO&gt; goodsDTOList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        Response&lt;Paging&lt;GoodsDTO&gt;&gt; response = goodsService.getGoods(Long supplierId, pageNo);</span><br><span class="line">        <span class="comment">// 此处接口在查询不到商品时没有按预期返回true，导致死循环</span></span><br><span class="line">        isEmpty = response.getResult().isEmpty();</span><br><span class="line">        <span class="keyword">if</span> (!isEmpty) &#123;</span><br><span class="line">           goodsDTOList(response.getResult().getData());</span><br><span class="line">        &#125;</span><br><span class="line">        pageNo++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (!isEmpty);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先通过 <code>top</code> 命令查看本机 CPU 使用率：9.46%<br><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-07.png" alt="YourKit-07"></p>
+<p>然后多次调用上面的方法后：71.63%<br><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-06.png" alt="YourKit-06"></p>
+<p>使用YourKit：</p>
+<p><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-08.png" alt="YourKit-08"></p>
+<h3 id="场景三：系统可用内存不足"><a href="#场景三：系统可用内存不足" class="headerlink" title="场景三：系统可用内存不足"></a>场景三：系统可用内存不足</h3><ul>
+<li>场景二还会引发一个问题就是OOM，可以使用YourKit的内存分析模块</li>
 </ul>
-</li>
-<li>紧急插入流程<ul>
-<li>明确需求的价值及影响</li>
-<li>定义紧急需求插入窗口</li>
+<p><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-09.png" alt="YourKit-09"></p>
+<h2 id="类似工具"><a href="#类似工具" class="headerlink" title="类似工具"></a>类似工具</h2><ul>
+<li><a href="https://www.ej-technologies.com/products/jprofiler/overview.html" rel="external nofollow noopener noreferrer" target="_blank">JProfiler</a> 待研究对比</li>
 </ul>
-</li>
-</ul>
-<h2 id="总结篇"><a href="#总结篇" class="headerlink" title="总结篇"></a>总结篇</h2><h3 id="我们的关系"><a href="#我们的关系" class="headerlink" title="我们的关系"></a>我们的关系</h3><ul>
-<li>战友（目标一致）</li>
-<li>互相尊重（人人平等）</li>
-<li>有问题要及时指出（共同进步）</li>
-</ul>
-<h3 id="卓有成效的管理要素"><a href="#卓有成效的管理要素" class="headerlink" title="卓有成效的管理要素"></a>卓有成效的管理要素</h3><ul>
-<li>掌控时间</li>
-<li>重视贡献</li>
-<li>善用长处</li>
-<li>要事优先</li>
-<li>有效决策</li>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.yourkit.com/docs/java/help/" rel="external nofollow noopener noreferrer" target="_blank">https://www.yourkit.com/docs/java/help/</a></li>
 </ul>
 
       
@@ -575,7 +456,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/" title="成为PM后的一些思考" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/</a>
+      <a href="https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/" title="YourKit-Java性能分析工具的应用" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -621,13 +502,9 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/2019/04/02/YourKit-Java性能分析工具的应用/" title="YourKit-Java性能分析工具的应用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/2019/03/30/商品ES索引同步历程/" title="商品ES索引同步历程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2019/04/01/成为PM后的一些思考/" title="成为PM后的一些思考"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
