@@ -18,21 +18,21 @@
   
   
   <title>ElasticSearch性能调优之设置refresh_interval实战 | 政采云商品中心 - 技术博客</title>
-  <meta name="description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch）原文链接: https://thare.cn/posts/c358565.html   接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的">
+  <meta name="description" content="接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的地方，自己对ES的深度和广度也有待加强。">
 <meta name="keywords" content="Elasticsearch,性能调优">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ElasticSearch性能调优之设置refresh_interval实战">
 <meta property="og:url" content="https://blog.zcy-commodity.tech/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/index.html">
 <meta property="og:site_name" content="政采云商品中心技术博客">
-<meta property="og:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch）原文链接: https://thare.cn/posts/c358565.html   接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的">
+<meta property="og:description" content="接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的地方，自己对ES的深度和广度也有待加强。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://coding.net/u/Thare-Lam/p/blog/git/raw/master/asserts/img/0x02/before.jpg">
 <meta property="og:image" content="https://coding.net/u/Thare-Lam/p/blog/git/raw/master/asserts/img/0x02/compare.jpg">
 <meta property="og:image" content="https://coding.net/u/Thare-Lam/p/blog/git/raw/master/asserts/img/0x02/after.jpg">
-<meta property="og:updated_time" content="2019-03-22T14:18:26.998Z">
+<meta property="og:updated_time" content="2019-04-02T07:24:47.101Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ElasticSearch性能调优之设置refresh_interval实战">
-<meta name="twitter:description" content="作者简介: 凉一, 主要负责商品搜索（Elasticsearch）原文链接: https://thare.cn/posts/c358565.html   接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的">
+<meta name="twitter:description" content="接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的地方，自己对ES的深度和广度也有待加强。">
 <meta name="twitter:image" content="https://coding.net/u/Thare-Lam/p/blog/git/raw/master/asserts/img/0x02/before.jpg">
   <!-- Canonical links -->
   <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/02/19/ElasticSearch性能调优之设置refresh_interval实战/index.html">
@@ -359,12 +359,8 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <blockquote>
-<p>作者简介: 凉一, 主要负责商品搜索（Elasticsearch）<br>原文链接: <a href="https://thare.cn/posts/c358565.html" rel="external nofollow noopener noreferrer" target="_blank">https://thare.cn/posts/c358565.html</a></p>
-</blockquote>
-<blockquote>
-<p>接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的地方，自己对ES的深度和广度也有待加强。</p>
-</blockquote>
+        <p>接手搜索几个月了，把公司的商品搜索从业务代码剥离成独立应用，再不断调整优化（代码结构），目前暂时趋于稳定（搜索中心化和产品化还有很长一段路要走），也能够迅速响应上层业务方的需求。自己也由一个搜索小白到了小试牛刀的阶段。项目中也还有很多可以改进的地方，自己对ES的深度和广度也有待加强。</p>
+<a id="more"></a>
 <p>先贴上环境信息</p>
 <ul>
 <li>业务背景：商品</li>
@@ -395,6 +391,9 @@
 <li>ES的查询是近实时的（需要做好至少延迟1S的打算），实时性高的场景不适用；</li>
 <li>对于搜索结果实时性不高的场景（如上），可以适当增加refresh_internal，效果真的可见一斑。</li>
 </ul>
+<blockquote>
+<p>作者简介: 凉一, 主要负责商品搜索（Elasticsearch）<br>原文链接: <a href="https://thare.cn/posts/c358565.html" rel="external nofollow noopener noreferrer" target="_blank">https://thare.cn/posts/c358565.html</a></p>
+</blockquote>
 
       
     </div>

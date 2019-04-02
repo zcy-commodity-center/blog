@@ -18,13 +18,13 @@
   
   
   <title>YourKit-Java性能分析工具的应用 | 政采云商品中心 - 技术博客</title>
-  <meta name="description" content="作者简介：灰谷，主要负责协议商品管理。    YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息  目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的">
+  <meta name="description" content="YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息">
 <meta name="keywords" content="YourKit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YourKit-Java性能分析工具的应用">
 <meta property="og:url" content="https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/index.html">
 <meta property="og:site_name" content="政采云商品中心技术博客">
-<meta property="og:description" content="作者简介：灰谷，主要负责协议商品管理。    YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息  目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的">
+<meta property="og:description" content="YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg">
 <meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/idea_wizard.png">
@@ -35,10 +35,10 @@
 <meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-06.png">
 <meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-08.png">
 <meta property="og:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/YourKit-09.png">
-<meta property="og:updated_time" content="2019-04-02T07:08:55.143Z">
+<meta property="og:updated_time" content="2019-04-02T07:24:53.846Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YourKit-Java性能分析工具的应用">
-<meta name="twitter:description" content="作者简介：灰谷，主要负责协议商品管理。    YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息  目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的">
+<meta name="twitter:description" content="YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息">
 <meta name="twitter:image" content="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg">
   <!-- Canonical links -->
   <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/index.html">
@@ -374,15 +374,12 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <blockquote>
-<p>作者简介：灰谷，主要负责协议商品管理。</p>
-</blockquote>
-<p><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg" alt></p>
+        <p><img src="https://coding.net/u/zcy-commodity-center/p/zcy-commodity-blog-source/git/raw/master/yourkit/yourkit-logo-1.jpg" alt></p>
 <blockquote>
 <p>YourKit 是一款用于分析Java和.Net应用程序的工具，在程序运行过程中对CPU、内存进行分析，直观的展示方法调用耗时、调用栈、调用次数、执行的sql、内存占用情况等信息</p>
 </blockquote>
-<p>目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的健康状况，但是这些工具都只支持线上环境，在<strong>本地开发阶段</strong>无法有效利用这些工具，那么我们如何在开发阶段定位性能问题？打印log记录时间吗？还是靠肉眼看代码？这些方式真对一些长事务、分布式调用、批量操作的场景就不适用了，本文介绍的 <a href="https://www.yourkit.com/" rel="external nofollow noopener noreferrer" target="_blank">YourKit</a> 可以帮助我们做到这一点。  </p>
 <a id="more"></a>
+<p>目前线上可以分析应用性能的工具有很多，pinpoint、SkyWalking等，可以比较直观的分析分布式请求、定位性能问题，另外基于ELK的Grafana也便于监控机器的健康状况，但是这些工具都只支持线上环境，在<strong>本地开发阶段</strong>无法有效利用这些工具，那么我们如何在开发阶段定位性能问题？打印log记录时间吗？还是靠肉眼看代码？这些方式真对一些长事务、分布式调用、批量操作的场景就不适用了，本文介绍的 <a href="https://www.yourkit.com/" rel="external nofollow noopener noreferrer" target="_blank">YourKit</a> 可以帮助我们做到这一点。  </p>
 <h2 id="安装与启动"><a href="#安装与启动" class="headerlink" title="安装与启动"></a>安装与启动</h2><p>YourKit的一大优点就是安装和使用特别简单：</p>
 <ul>
 <li>下载、安装完成后YourKit会提示要安装哪个 IDE 的插件，选了 IntelliJ IDEA之后，插件自动安装<ul>
@@ -447,6 +444,9 @@
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://www.yourkit.com/docs/java/help/" rel="external nofollow noopener noreferrer" target="_blank">https://www.yourkit.com/docs/java/help/</a></li>
 </ul>
+<blockquote>
+<p>作者简介：灰谷，主要负责协议商品管理。</p>
+</blockquote>
 
       
     </div>
