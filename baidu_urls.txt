@@ -1,3 +1,3 @@
+https://blog.zcy-commodity.tech/2019/04/04/一次sql-model踩坑记录/
 https://blog.zcy-commodity.tech/2019/04/02/YourKit-Java性能分析工具的应用/
 https://blog.zcy-commodity.tech/2019/04/01/成为PM后的一些思考/
-https://blog.zcy-commodity.tech/2019/03/30/商品ES索引同步历程/

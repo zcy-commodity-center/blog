@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>一次sql_model踩坑记录 | 政采云商品中心 - 技术博客</title>
+  <meta name="description" content="最近有个版本要求修改评论长度限制，由64改为500，在调试过程中，评论始终只能显示出来200字，经过查库，发现字段长度被定为200，插入时被截断。超出长度不是因该报错吗？嗯，应该是sql_mode的问题。">
+<meta name="keywords" content="sql_model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次sql_model踩坑记录">
+<meta property="og:url" content="https://blog.zcy-commodity.tech/2019/04/04/一次sql-model踩坑记录/index.html">
+<meta property="og:site_name" content="政采云商品中心技术博客">
+<meta property="og:description" content="最近有个版本要求修改评论长度限制，由64改为500，在调试过程中，评论始终只能显示出来200字，经过查库，发现字段长度被定为200，插入时被截断。超出长度不是因该报错吗？嗯，应该是sql_mode的问题。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-04T08:48:47.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一次sql_model踩坑记录">
+<meta name="twitter:description" content="最近有个版本要求修改评论长度限制，由64改为500，在调试过程中，评论始终只能显示出来200字，经过查库，发现字段长度被定为200，插入时被截断。超出长度不是因该报错吗？嗯，应该是sql_mode的问题。">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.zcy-commodity.tech/2019/04/04/一次sql-model踩坑记录/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="政采云商品中心技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">商品中心</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">政采云有限公司</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 浙江 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                彬彬：像我这么NB的我们有7个<br>灰谷：码出自由<br>凉一：无极致，不code<br>双毅：more effective, no idle work<br>元芳：做正确的事<br>奕铭：人生苦短，join us<br>渊虹：我写代码养你
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/业务架构/">业务架构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/实用工具/">实用工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目管理/">项目管理</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/YourKit/">YourKit</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql-model/">sql_model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/业务架构/">业务架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能调优/">性能调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/项目管理/">项目管理</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Elasticsearch/" style="font-size: 14px;">Elasticsearch</a> <a href="/tags/YourKit/" style="font-size: 13px;">YourKit</a> <a href="/tags/sql-model/" style="font-size: 13px;">sql_model</a> <a href="/tags/业务架构/" style="font-size: 13px;">业务架构</a> <a href="/tags/性能调优/" style="font-size: 13px;">性能调优</a> <a href="/tags/架构/" style="font-size: 13px;">架构</a> <a href="/tags/项目管理/" style="font-size: 13px;">项目管理</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Mysql/">Mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/04/04/一次sql-model踩坑记录/" class="title">一次sql_model踩坑记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-04-04T08:30:23.000Z" itemprop="datePublished">2019-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/实用工具/">实用工具</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/04/02/YourKit-Java性能分析工具的应用/" class="title">YourKit-Java性能分析工具的应用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-04-02T03:35:54.000Z" itemprop="datePublished">2019-04-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/项目管理/">项目管理</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/04/01/成为PM后的一些思考/" class="title">成为PM后的一些思考</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-31T16:05:29.000Z" itemprop="datePublished">2019-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Elasticsearch/">Elasticsearch</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/商品ES索引同步历程/" class="title">商品ES索引同步历程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-29T17:50:57.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/22/Elasticsearch-DSL快速上手指南/" class="title">Elasticsearch DSL快速上手指南</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-22T14:16:26.000Z" itemprop="datePublished">2019-03-22</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#验证"><span class="toc-number">1.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL-MODE"><span class="toc-number">2.</span> <span class="toc-text">SQL_MODE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置SQL-MODE"><span class="toc-number">3.</span> <span class="toc-text">设置SQL_MODE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注意："><span class="toc-number">3.1.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL-MODE可选值"><span class="toc-number">4.</span> <span class="toc-text">SQL_MODE可选值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#其它几个影响语法及数据校验的值"><span class="toc-number">4.1.</span> <span class="toc-text">其它几个影响语法及数据校验的值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">5.</span> <span class="toc-text">更多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-一次sql-model踩坑记录" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一次sql_model踩坑记录
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/04/04/一次sql-model踩坑记录/" class="article-date">
+	  <time datetime="2019-04-04T08:30:23.000Z" itemprop="datePublished">2019-04-04</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Mysql/">Mysql</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/sql-model/">sql_model</a>
+  </span>
+
+
+        
+
+	<span class="article-read hidden-xs">
+    	<i class="icon icon-eye-fill" aria-hidden="true"></i>
+    	<span id="/2019/04/04/一次sql-model踩坑记录/" class="leancloud_visitors" data-flag-title="一次sql_model踩坑记录">
+			<span class="leancloud-visitors-count">0</span>
+		</span>
+    </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/04/04/一次sql-model踩坑记录/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 850(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>最近有个版本要求修改评论长度限制，由64改为500，在调试过程中，评论始终只能显示出来200字，经过查库，发现字段长度被定为200，插入时被截断。超出长度不是因该报错吗？嗯，应该是sql_mode的问题。</p>
+<a id="more"></a>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 创建表 username 长度为8</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">8</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`pwd`</span> <span class="built_in">varchar</span>(<span class="number">8</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`seq`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`username`</span> (<span class="string">`username`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">168</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">## 插入 username 长度为9的值</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`test`</span>(<span class="string">`username`</span> , <span class="string">`pwd`</span> , <span class="string">`seq`</span>)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">	(</span><br><span class="line">		<span class="string">'123456789'</span> ,</span><br><span class="line">		<span class="string">'133aaa'</span> ,</span><br><span class="line">		<span class="literal">NULL</span></span><br><span class="line">	);</span><br><span class="line"></span><br><span class="line"><span class="comment">## 插入成功</span></span><br><span class="line">No errors;1 row affected,taking 3.2 ms</span><br><span class="line"></span><br><span class="line"><span class="comment">## 查询发现值被截断</span></span><br><span class="line"><span class="keyword">select</span> username <span class="keyword">from</span> <span class="keyword">test</span>;</span><br><span class="line">&gt; 12345678</span><br><span class="line"></span><br><span class="line"><span class="comment">## 改变sql_mode</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">SESSION</span> sql_mode  = <span class="string">'STRICT_ALL_TABLES'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">## 再次插入长度相同的值</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`test`</span>(<span class="string">`username`</span> , <span class="string">`pwd`</span> , <span class="string">`seq`</span>)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">	(</span><br><span class="line">		<span class="string">'123456789'</span> ,</span><br><span class="line">		<span class="string">'133aaa'</span> ,</span><br><span class="line">		<span class="literal">NULL</span></span><br><span class="line">	);</span><br><span class="line">	</span><br><span class="line"><span class="comment">## 报错</span></span><br><span class="line">Data too long for column 'username' at row 1</span><br></pre></td></tr></table></figure>
+<h2 id="SQL-MODE"><a href="#SQL-MODE" class="headerlink" title="SQL_MODE"></a>SQL_MODE</h2><p>MySQL服务器可以在不同的模式设置(sql_mode)下运行，并可以对不同的客户端进行不同的设置，通过sql_mode变量设置。</p>
+<p>影响点：</p>
+<ul>
+<li>语法</li>
+<li>数据校验</li>
+</ul>
+<h2 id="设置SQL-MODE"><a href="#设置SQL-MODE" class="headerlink" title="设置SQL_MODE"></a>设置SQL_MODE</h2><p>默认的sql_mode值为NO_ENGINE_SUBSTITUTION，可在启动时及运行时设置该变量。</p>
+<p>启动时设置：</p>
+<ul>
+<li>启动时命令行添加 —sql-mode=”A,B,C……”(多值使用“,”隔开)</li>
+<li>在my.cnf配置文件中添加sql-mode=”A,B,C……”(多值使用“,”隔开) </li>
+</ul>
+<p>运行时设置：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> sql_mode = <span class="string">'A,B,C……'</span>; <span class="comment">## 全局 重连生效</span></span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">SESSION</span> sql_mode = <span class="string">'A,B,C……'</span>;<span class="comment">## 当前会话 即时生效</span></span><br></pre></td></tr></table></figure>
+<p>查看：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- <span class="keyword">SELECT</span> @@GLOBAL.sql_mode </span><br><span class="line">- <span class="keyword">SELECT</span> @@SESSION.sql_mode</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><ul>
+<li>在表使用分区后，最好不要改变sql_mode，因为不同的sql_mode会影响一些计算结果，对分区策略产生影响</li>
+<li>主从服务器，使用相同的sql_mode，以实现数据同步</li>
+</ul>
+</blockquote>
+<h2 id="SQL-MODE可选值"><a href="#SQL-MODE可选值" class="headerlink" title="SQL_MODE可选值"></a>SQL_MODE可选值</h2><h3 id="其它几个影响语法及数据校验的值"><a href="#其它几个影响语法及数据校验的值" class="headerlink" title="其它几个影响语法及数据校验的值"></a>其它几个影响语法及数据校验的值</h3><ul>
+<li><p>ALLOW_INCALID_DATES</p>
+<p>不校验时间的有效性，只会校验月在1-12之间，日在1-31之间，只针对DATE和DATETIME类型有效，对TIMESTAMP无效。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> temp <span class="keyword">values</span>(<span class="string">'2019-02-31 01:01:01'</span>);</span><br><span class="line"></span><br><span class="line">Incorrect datetime value: '2019-02-31 01:01:01' for column 'dt' at row 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">SESSION</span> sql_mode  = <span class="string">'ALLOW_INVALID_DATES'</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> temp <span class="keyword">values</span>(<span class="string">'2019-02-31 01:01:01'</span>);</span><br><span class="line"></span><br><span class="line">No errors;1 row affected,taking 3.2 ms</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ANSI_QUOTES</p>
+<p>双引号(“)被用作标识符引用字符，和“`”相同。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> <span class="string">"temp"</span>;</span><br><span class="line"></span><br><span class="line">You have an error in your SQL syntax; <span class="keyword">check</span> the <span class="keyword">manual</span> that corresponds <span class="keyword">to</span> your MySQL <span class="keyword">server</span> <span class="keyword">version</span> <span class="keyword">for</span> the <span class="keyword">right</span> syntax <span class="keyword">to</span> <span class="keyword">use</span> near <span class="string">'"temp"'</span> <span class="keyword">at</span> line <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">SESSION</span> sql_mode  = <span class="string">'ANSI_QUOTES'</span>;</span><br><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> <span class="string">"temp"</span>;</span><br><span class="line"></span><br><span class="line">No errors;0 row affected,taking 0.2 ms</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ERROR_FOR_DEVISION_BY_ZERO</p>
+<p>控制/0及mod(n,0)的验证，该模式开启后可/0及mod(n,0)操作会生成警告，如果此时开启了严格SQL模式(STRICT_TRANS_TABLES  或 STRICT_ALL_TABLES)，会阻止语句执行，报错。不影响select语句。</p>
+</li>
+<li><p>HIGH_NOT_PRECEDENCE</p>
+<p>提高逻辑运算NOT优先级</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">not</span> <span class="number">1</span>;</span><br><span class="line">&gt; 0</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">between</span> <span class="number">-1</span> <span class="keyword">and</span> <span class="number">2</span>;</span><br><span class="line">&gt; 1</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">not</span> <span class="number">1</span> <span class="keyword">between</span> <span class="number">-1</span> <span class="keyword">and</span> <span class="number">2</span>;</span><br><span class="line">&gt; 0</span><br><span class="line"></span><br><span class="line"><span class="comment">## 设置sql_mode</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">SESSION</span> sql_mode  = <span class="string">'HIGH_NOT_PRECEDENCE'</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">not</span> <span class="number">1</span> <span class="keyword">between</span> <span class="number">-1</span> <span class="keyword">and</span> <span class="number">2</span>;</span><br><span class="line">&gt; 0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ONLY_FULL_GROUP_BY</p>
+<p>影响group by语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">0</span>) ct,username <span class="keyword">from</span> <span class="keyword">test</span> <span class="keyword">group</span> <span class="keyword">by</span> pwd;</span><br><span class="line">&gt; 2 | 12345678</span><br><span class="line"></span><br><span class="line"><span class="comment">## 设置sql_mode</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">SESSION</span> sql_mode  = <span class="string">'ONLY_FULL_GROUP_BY'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">0</span>) ct,username <span class="keyword">from</span> <span class="keyword">test</span> <span class="keyword">group</span> <span class="keyword">by</span> pwd;</span><br><span class="line">Expression <span class="comment">#2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'test.test.username' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><blockquote>
+<p>以上列举了几个对编码影响较大的选项，更多选项见<a href="https://dev.mysql.com/doc/refman/5.6/en/sql-mode.html" rel="external nofollow noopener noreferrer" target="_blank">官网说明</a>。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以后关于SQL的写法，和@卓月抬杠时，除了要确定MySQL版本之外，还要问一句，您用的什么sql_mode…….O(∩_∩)O哈！。</p>
+<blockquote>
+<p>作者简介: 彬彬，商品部门最重的人</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zcy-commodity.tech/2019/04/04/一次sql-model踩坑记录/" title="一次sql_model踩坑记录" target="_blank" rel="external">https://blog.zcy-commodity.tech/2019/04/04/一次sql-model踩坑记录/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external nofollow noopener noreferrer">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href target="_blank"><span class="text-dark">商品中心</span><small class="ml-1x">政采云有限公司</small></a></h3>
+        <div>政采云有限公司由浙江省财政厅与阿里巴巴集团共同筹建成立，专注服务于政府采购各类用户，为政府采购交易和管理电子化提供整体解决方案。致力于打造政府采购云服务生态圈。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2019/04/02/YourKit-Java性能分析工具的应用/" title="YourKit-Java性能分析工具的应用"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        &copy; 2019 政采云有限公司
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank" rel="external nofollow noopener noreferrer"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank" rel="external nofollow noopener noreferrer">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: true,
+    appId: 'KMJNjsaJ380sukaFpxB9g8zH-gzGzoHsz',
+    appKey: 'L6oK8Q41FdWQSN26OJLvby8n',
+    placeholder: 'Touch me',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
